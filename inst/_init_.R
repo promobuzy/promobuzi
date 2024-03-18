@@ -11,25 +11,13 @@ diretorio <- "data-raw"
 
 baixar_paginas(lista_url = lista, diretorio = diretorio)
 
-
 arquivos <- list.files(diretorio, full.names = T)
 
 
 dados_amz <- ler_amazon(diretorio = diretorio)
-
 dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
-
 dados_mcl <- ler_mercado_livre(diretorio = diretorio)
 
-ler_pagina <- function(arquivo) {
-  if (grepl("amazon", arquivo)) {
-    return(ler_amazon(arquivos = arquivo))
-  } else if (grepl("magazine", arquivo)) {
-    return(ler_magazine_luiza(arquivos = arquivo))
-  } else if (grepl("mercado", arquivo)) {
-    return(ler_mercado_livre(arquivos = arquivo))
-  } else {
-    warning("Loja não reconhecida no nome do arquivo:", arquivo)
-    return(NULL)
-  }
-}
+dados <- rbind(dados_amz,dados_mgl,dados_mcl)
+
+

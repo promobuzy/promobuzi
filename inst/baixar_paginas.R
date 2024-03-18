@@ -7,6 +7,8 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   pagina <- seq_along(lista_url)
 
+  unlink("data-raw", recursive = T)
+
   Cookie <- readLines("cookie.txt")
 
   h <-  c(
