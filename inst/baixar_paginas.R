@@ -7,6 +7,8 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   pagina <- seq_along(lista_url)
 
+  arquivos <- list.files(diretorio, )
+
   unlink("data-raw", recursive = T)
 
   Cookie <- readLines("cookie.txt")
@@ -24,7 +26,7 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
     path <- file.path(diretorio, paste0(nome_loja,"_arquivo_",.y,"_extracao.html"))
 
-   h1 <- .x |>
+    .x |>
       httr2::request() |>
       httr2::req_headers(!!!h)|>
       httr2::req_perform(path = path)
@@ -32,5 +34,3 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   }, NULL))
 }
-
-h1$headers

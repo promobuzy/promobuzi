@@ -5,7 +5,6 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
     arquivos <- list.files(diretorio, full.names = T) |>
       stringr::str_subset("amazon|amzn")
-
   }
 
   purrr::map_dfr(arquivos, purrr::possibly(~{

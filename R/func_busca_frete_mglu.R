@@ -1,7 +1,7 @@
 busca_frete_mglu <- function(content, cep = NULL) {
 
   if(is.null(cep)){
-    cep <- "88303005"
+    cep <- "12605530"
   }
 
  cep <- stringr::str_replace_all(cep,"\\D","")
@@ -21,8 +21,6 @@ busca_frete_mglu <- function(content, cep = NULL) {
   price <- purrr::pluck(script,"props","pageProps","data","product","price","fullPrice") |>
     as.double()
   product_id <- purrr::pluck(script,"props","pageProps","data","product","id")
-  cep <- "88303005"
-
 
   json_string <- sprintf(
     '{"operationName": "shippingQuery",
@@ -55,7 +53,6 @@ busca_frete_mglu <- function(content, cep = NULL) {
         }
       }
     }', subcategoryId, height,length,weight,width,product_id,price, cep)
-
 
   body_json <- jsonlite::fromJSON(json_string)
 
