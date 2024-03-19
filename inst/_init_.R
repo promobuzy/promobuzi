@@ -19,3 +19,5 @@ dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
 dados_mcl <- ler_mercado_livre(diretorio = diretorio)
 
 dados <- rbind(dados_amz,dados_mgl,dados_mcl)
+
+openxlsx::write.xlsx(dados, "dados.xlsx")
