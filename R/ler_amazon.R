@@ -15,7 +15,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     titulo <- xml2::xml_find_first(content, "//span[@id='productTitle']") |>
       xml2::xml_text(trim = T)
 
-    texto_opcional <- xml2::xml_find_first(content, ".//span[@id='dealBadgeSupportingText']") |>
+    texto_opcional <- xml2::xml_find_first(content, ".//span[@id='dealBadgeSupportingText'] | //div[@id = 'zeitgeistBadge_feature_div']//i") |>
       xml2::xml_text(trim = T)
 
     preco_novo <- xml2::xml_find_all(content, "//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay']") |>

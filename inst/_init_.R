@@ -5,7 +5,7 @@ lista <- c("https://amzn.to/4a733OZ",
            "https://www.magazinevoce.com.br/magazinepromobuzy/lavadora-de-roupas-consul-12kg-16-programas-de-lavagem-branca-cwh12/p/236161000/ed/lava/",
            "https://www.mercadolivre.com.br/notebook-gamer-predator-phn16-71-76pl-ci7-16gb512ssd-rtx4050/p/MLB33314384#reco_item_pos=0&reco_backend=item_decorator&reco_backend_type=function&reco_client=home_items-decorator-legacy&reco_id=940c6e62-b99f-4d82-8d49-a8a444df7660&c_id=/home/navigation-recommendations-seed/element&c_uid=0b2bf2e5-8aeb-419d-b559-231648f5d297&da_id=navigation&da_position=0&id_origin=/home/dynamic_access&da_sort_algorithm=ranker")
 
-lista <- "https://www.mercadolivre.com.br/ventilador-coluna-40cm-super-power-vsp-40c-nb-mondial-cor-da-estrutura-preto-cor-das-pas-cinza-dimetro-40-cm-frequncia-60-material-das-pas-plastico-quantidade-de-pas-6-110v/p/MLB27577458?pdp_filters=category:MLB5726%7Cdeal:MLB779362-1#searchVariation=MLB27577458&position=4&search_layout=stack&type=product&tracking_id=99aa0286-29bc-48a1-8539-65ea90997f5a&deal_print_id=c54ddb40-e537-11ee-a066-8514dc2abc1a&c_id=carouseldynamic-normal&c_element_order=undefined&c_campaign=OFERTAS-PARA-COMPRAR-AGORA-%F0%9F%94%A5&c_uid=c54ddb40-e537-11ee-a066-8514dc2abc1a"
+lista <- "https://www.amazon.com.br/LYOR-Bandeja-Bambu-Marrom-Natural/dp/B08X1B72TP?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3O2G3I0BSD19&keywords=bandeja&qid=1695737914&refinements=p_72%3A17833786011&rnid=5560472011&sprefix=bande%2Caps%2C326&sr=8-5&th=1&linkCode=sl1&tag=promobuzy-20&linkId=daf4acd3815ef51f47c04843b34c479c&language=pt_BR&ref_=as_li_ss_tl"
 
 diretorio <- "data-raw"
 
