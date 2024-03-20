@@ -4,6 +4,8 @@
 lista <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
+lista <- "https://amzn.to/4a0U7dF"
+
 # informa diretorio onde dados devem ser salvos.
 diretorio <- "data-raw/"
 

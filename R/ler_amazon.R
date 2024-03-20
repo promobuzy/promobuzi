@@ -21,27 +21,23 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     titulo <- xml2::xml_find_first(x, "//span[@id='productTitle']") |>
       xml2::xml_text(trim = T)
 
-    texto_opcional <- xml2::xml_find_first(x, ".//span[@id='dealBadgeSupportingText'] | //div[@id = 'zeitgeistBadge_feature_div']//i | .//span[@class='a-size-small aok-float-left ac-badge-rectangle']") |>
+    texto_opcional <- xml2::xml_find_first(x, ".//span[@id='dealBadgeSupportingText'] | .//div[@id = 'zeitgeistBadge_feature_div']//i") |>
       xml2::xml_text(trim = T)
 
     preco_antigo <- xml2::xml_find_first(x, ".//span[@class='a-price a-text-price' and @data-a-strike='true']") |>
       xml2::xml_text(trim = T) |>
       purrr::possibly(~.[1], otherwise = NA) () |>
-      stringr::str_extract("R\\$\\d+,\\d{2}")
+      stringr::str_extract("\\d+,\\d{2}")
 
     preco_novo <- xml2::xml_find_all(x, ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay']") |>
-      xml2::xml_text(trim = T)
+      xml2::xml_text(trim = T) |>
+      stringr::str_extract("\\d+,\\d{2}")
 
     parcelamento <- xml2::xml_find_first(x, ".//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
       xml2::xml_text()
 
-    desconto <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
-      xml2::xml_text() |>
-      stringr::str_extract(".*\\d+%(?: off)?\\)?")
-
     entrega <- xml2::xml_find_first(x, ".//div[@id = 'mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE']") |>
-      xml2::xml_text(trim = T) |>
-      stringr::str_extract("^[^:]+")
+      xml2::xml_text(trim = T)
 
     pagamento <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
       xml2::xml_text()
@@ -50,7 +46,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
-    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, desconto, entrega, link, loja = "25827")
+    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "25827")
 
   }, NULL), .progress = TRUE)
 }
