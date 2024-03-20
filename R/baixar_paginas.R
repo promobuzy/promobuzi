@@ -24,9 +24,14 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
     nome_loja <- stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\\.]+)") |>
       stringr::str_replace_all("www.","")
 
-    path <- file.path(diretorio, paste0(nome_loja,"_arquivo_",.y,"_extracao.html"))
+    nome_arquivo <- paste0(nome_loja,"_arquivo_",.y,"_extracao.html")
+    path <- file.path(diretorio, nome_arquivo)
+    path_liks <- file.path(diretorio, "links.txt")
 
-    .x |>
+    links <- paste(nome_arquivo,.x, sep=",")
+    readr::write_lines(links,path_liks, append = T )
+
+     .x |>
       httr2::request() |>
       httr2::req_headers(!!!h)|>
       httr2::req_perform(path = path)

@@ -7,40 +7,51 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       stringr::str_subset("amazon|amzn")
   }
 
-  purrr::map_dfr(arquivos, purrr::possibly(~{
+  conteudo <- purrr::map(arquivos, ~xml2::read_html(.x, encoding = "UTF-8"))
 
-    content <- .x |>
-      xml2::read_html(encoding = "UTF-8")
+  links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
+    tibble::as_tibble() |>
+    tidyr::separate(value, c("path","link"), sep =",", convert = T)
 
-    titulo <- xml2::xml_find_first(content, "//span[@id='productTitle']") |>
+
+  purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
+
+    x <- conteudo[[.x]]
+
+    titulo <- xml2::xml_find_first(x, "//span[@id='productTitle']") |>
       xml2::xml_text(trim = T)
 
-    texto_opcional <- xml2::xml_find_first(content, ".//span[@id='dealBadgeSupportingText'] | //div[@id = 'zeitgeistBadge_feature_div']//i") |>
+    texto_opcional <- xml2::xml_find_first(x, ".//span[@id='dealBadgeSupportingText'] | //div[@id = 'zeitgeistBadge_feature_div']//i | .//span[@class='a-size-small aok-float-left ac-badge-rectangle']") |>
       xml2::xml_text(trim = T)
 
-    preco_novo <- xml2::xml_find_all(content, "//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay']") |>
+    preco_antigo <- xml2::xml_find_first(x, ".//span[@class='a-price a-text-price' and @data-a-strike='true']") |>
       xml2::xml_text(trim = T) |>
-      purrr::possibly(~.[1], otherwise = NA)()
+      purrr::possibly(~.[1], otherwise = NA) () |>
+      stringr::str_extract("R\\$\\d+,\\d{2}")
 
-    preco_antigo <- xml2::xml_find_all(content, "//div[@id='corePriceDisplay_desktop_feature_div']//span[contains(@class, 'aok-offscreen')]") |>
-      xml2::xml_text(trim = T) |>
-      purrr::possibly(~.[2], otherwise = NA)()
+    preco_novo <- xml2::xml_find_all(x, ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay']") |>
+      xml2::xml_text(trim = T)
 
-    parcelamento <- xml2::xml_find_first(content, "//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
+    parcelamento <- xml2::xml_find_first(x, ".//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
       xml2::xml_text()
 
-    desconto <- xml2::xml_find_first(content, "//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
+    desconto <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
+      xml2::xml_text() |>
+      stringr::str_extract(".*\\d+%(?: off)?\\)?")
+
+    entrega <- xml2::xml_find_first(x, ".//div[@id = 'mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE']") |>
+      xml2::xml_text(trim = T) |>
+      stringr::str_extract("^[^:]+")
+
+    pagamento <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
       xml2::xml_text()
 
-    entrega <- xml2::xml_find_first(content, ".//div[@id = 'mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE']") |>
-      xml2::xml_text(trim = T)
+    cupom <- NA
 
-    tibble::tibble(loja = "Amazon", titulo, texto_opcional, preco_novo, preco_antigo, parcelamento, desconto, entrega)
+    link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, desconto, entrega, link, loja = "25827")
 
   }, NULL), .progress = TRUE)
 }
-
-
-
-
 
