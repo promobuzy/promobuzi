@@ -13,7 +13,6 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     tibble::as_tibble() |>
     tidyr::separate(value, c("path","link"), sep =",", convert = T)
 
-
   purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
 
     x <- conteudo[[.x]]
