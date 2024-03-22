@@ -28,15 +28,22 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       purrr::possibly(~.[1], otherwise = NA) () |>
       stringr::str_extract("\\d+,\\d{2}")
 
-    preco_novo <- xml2::xml_find_all(x, ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay']") |>
+    preco_novo <- xml2::xml_find_all(x,  ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay'] | .//div[@class='a-section a-spacing-none aok-align-center']//span[@class='a-offscreen']") |>
       xml2::xml_text(trim = T) |>
+      purrr::possibly(~.[1], otherwise = NA) () |>
       stringr::str_extract("\\d+,\\d{2}")
+
 
     parcelamento <- xml2::xml_find_first(x, ".//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
       xml2::xml_text()
 
     entrega <- xml2::xml_find_first(x, ".//div[@id = 'mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE']") |>
-      xml2::xml_text(trim = T)
+      xml2::xml_text(trim = T) |>
+      (\(texto)dplyr::case_when(
+        stringr::str_detect(texto,"primeiro | 1º") ~ "Frete Grátis - 1° Pedido",
+        stringr::str_detect(texto,"Entrega GRÁTIS") ~ "Frete Grátis, aproveite!",
+        stringr::str_detect(texto,"Entrega") ~ "Frete: Consultar Região",
+      )) ()
 
     pagamento <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
       xml2::xml_text()

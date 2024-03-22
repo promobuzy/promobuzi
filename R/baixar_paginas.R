@@ -11,15 +11,12 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   unlink(arquivos)
 
-  cookie <- readLines("cookie.txt")
-
   h <-  c(
     `User-Agent` = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
     `Accept-Language` = "pt-BR,pt;q=0.8",
     `Accept-Encoding` = "gzip, deflate, br",
     `Accept`= 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-    `Referer`= 'https://www.google.com/',
-    `set-cookie` = cookie_string)
+    `Referer`= 'https://www.google.com/')
 
   purrr::walk2(lista_url,pagina , purrr::possibly(~{
 

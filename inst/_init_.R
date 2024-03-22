@@ -17,6 +17,7 @@ arquivos <- list.files(diretorio, full.names = T)
 
 # Lê arquivos, para cada loja existe um função especifica para ler dados da pagina
 dados_amz <- ler_amazon(diretorio = diretorio)
+
 dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
 dados_mcl <- ler_mercado_livre(diretorio = diretorio)
 
