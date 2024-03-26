@@ -7,38 +7,50 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
   }
 
-  purrr::map_dfr(arquivos, purrr::possibly(~{
+  conteudo <- purrr::map(arquivos, ~xml2::read_html(.x, encoding = "UTF-8"))
 
-    content <- .x |>
-      xml2::read_html(encoding = "UTF-8")
+  links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
+    tibble::as_tibble() |>
+    tidyr::separate(value, c("path","link"), sep =",", convert = T)
 
-    titulo <- xml2::xml_find_first(content, ".//h1") |>
+  purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
+
+    x <- conteudo[[.x]]
+
+    titulo <- xml2::xml_find_first(x, ".//h1") |>
       xml2::xml_text()
 
-    texto_opcional <- xml2::xml_find_first(content, ".//a[@class= 'ui-pdp-promotions-pill-label__target']") |>
+    texto_opcional <- xml2::xml_find_first(x, ".//a[@class= 'ui-pdp-promotions-pill-label__target']") |>
       xml2::xml_text()
 
-    preco_antigo <- xml2::xml_find_first(content, ".//span[@data-testid='price-part']") |>
+    preco_antigo <- xml2::xml_find_first(x, ".//span[@data-testid='price-part']") |>
       xml2::xml_text()
 
-    preco_novo <- xml2::xml_find_first(content, ".//div[@class='ui-pdp-price__second-line']//span[@data-testid='price-part']") |>
+    preco_novo <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__second-line']//span[@data-testid='price-part']") |>
       xml2::xml_text()
 
-    parcelamento <- xml2::xml_find_first(content, ".//div[@class='ui-pdp-price__subtitles']") |>
+    parcelamento <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__subtitles']") |>
       xml2::xml_text()
 
-    desconto <- xml2::xml_find_first(content, ".//div[@class='ui-pdp-price__second-line']//span[@class='ui-pdp-price__second-line__label ui-pdp-color--GREEN ui-pdp-size--MEDIUM']") |>
-      xml2::xml_text()
-
-    entrega <- xml2::xml_find_all(content, ".//form[@id='buybox-form']//p[contains(@class, 'GREEN')]") |>
+    entrega <- xml2::xml_find_all(x, "//div[@id='shipping_summary'] | //div[@class= 'ui-pdp-media ui-pdp-shipping ui-pdp-shipping--md mb-12 ui-pdp-color--GREEN']//p[contains(@class, 'GREEN')]") |>
       xml2::xml_text() |>
       unique() |>
-      paste(collapse = " ")
+      paste(collapse = " ") |>
+      (\(texto)dplyr::case_when(
+        stringr::str_detect(texto, "[gG]r[áa]ti[sS]") ~ "Frete Grátis",
+        TRUE ~ paste("Frete", "Consultar Região")
+      ))()
 
+    pagamento <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
+      xml2::xml_text()
 
-    dados <- tibble::tibble(loja = "Mercado Livre", titulo, texto_opcional, preco_novo, preco_antigo, parcelamento, desconto, entrega)
+    link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    dados <- tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "34790")
 
   }, NULL), .progress = TRUE)
 }
+
+
 
 

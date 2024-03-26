@@ -4,7 +4,7 @@
 lista <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
-lista <- "https://amzn.to/4a0U7dF"
+lista <- c("")
 
 # informa diretorio onde dados devem ser salvos.
 diretorio <- "data-raw/"
@@ -18,11 +18,12 @@ arquivos <- list.files(diretorio, full.names = T)
 # Lê arquivos, para cada loja existe um função especifica para ler dados da pagina
 dados_amz <- ler_amazon(diretorio = diretorio)
 
-dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
 dados_mcl <- ler_mercado_livre(diretorio = diretorio)
 
+dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
+
 # Unifica data frames
-dados <- dplyr::bind_rows(dados_amz, dados_mgl, dados_mcl)
+dados <- dplyr::bind_rows(dados_mcl)
 
 # Salva dados em formato xlsx na pata raiz, pode informar o diretorio completo "{seu/caminho/personalizado}/dados.xlsx"
 

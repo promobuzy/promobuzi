@@ -3,6 +3,7 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   if(is.null(diretorio)){
     diretorio <- "data-raw/"
+
   }
 
   pagina <- seq_along(lista_url)
@@ -22,6 +23,18 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
     nome_loja <- stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\\.]+)") |>
       stringr::str_replace_all("www.","")
+
+    ## extrai link absoluto mercado livre
+    if(stringr::str_detect(nome_loja, "mercado") == T){
+
+      .x <- httr2::request(.x) |>
+        httr2::req_headers(!!!h) |>
+        httr2::req_perform() |>
+        httr2::resp_body_html() |>
+        xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
+        xml2::xml_attr("href")
+
+    }
 
     nome_arquivo <- paste0(nome_loja,"_arquivo_",.y,"_extracao.html")
     path <- file.path(diretorio, nome_arquivo)
