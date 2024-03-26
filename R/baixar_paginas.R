@@ -26,7 +26,7 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
     ## extrai link absoluto mercado livre
     if(stringr::str_detect(nome_loja, "mercado") == T){
-
+      .c <- .x
       .x <- httr2::request(.x) |>
         httr2::req_headers(!!!h) |>
         httr2::req_perform() |>
@@ -40,7 +40,7 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
     path <- file.path(diretorio, nome_arquivo)
     path_liks <- file.path(diretorio, "links.txt")
 
-    links <- paste(nome_arquivo,.x, sep=",")
+    links <- paste(nome_arquivo,.c,.y, sep=",")
     readr::write_lines(links,path_liks, append = T )
 
     .x |>

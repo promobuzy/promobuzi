@@ -11,7 +11,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
   links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
     tibble::as_tibble() |>
-    tidyr::separate(value, c("path","link"), sep =",", convert = T)
+    tidyr::separate(value, c("path","link","index"), sep =",", convert = T)
 
   purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
 
@@ -51,8 +51,9 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     cupom <- NA
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
-    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "25827")
+    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "25827" , index = index )
 
   }, NULL), .progress = TRUE)
 }

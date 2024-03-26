@@ -11,7 +11,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
   links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
     tibble::as_tibble() |>
-    tidyr::separate(value, c("path","link"), sep =",", convert = T)
+    tidyr::separate(value, c("path","link","index"), sep =",", convert = T)
 
   purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
 
@@ -46,7 +46,9 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
-    dados <- tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "34790")
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    dados <- tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "34790", index = index )
 
   }, NULL), .progress = TRUE)
 }
