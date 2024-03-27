@@ -34,6 +34,8 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
         xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
         xml2::xml_attr("href")
 
+    } else {
+      .c <- .x
     }
 
     nome_arquivo <- paste0(nome_loja,"_arquivo_",.y,"_extracao.html")
