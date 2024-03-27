@@ -1,7 +1,7 @@
 
 # informa lista de urls para baixar, pode vir de uma planilha em excel.
 
-lista <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 1, colNames = F) |>
+lista <- openxlsx::read.xlsx("Captação de Ofertas - Promobuzy - v1.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
 lista <- c("")
@@ -23,11 +23,11 @@ dados_mcl <- ler_mercado_livre(diretorio = diretorio)
 dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
 
 # Unifica data frames
-dados <- dplyr::bind_rows(dados_mcl)
+dados <- dplyr::bind_rows(dados_amz, dados_mcl)
 
 # Salva dados em formato xlsx na pata raiz, pode informar o diretorio completo "{seu/caminho/personalizado}/dados.xlsx"
 
-caminho_excel <- "Automação - Amazon.xlsx"
+caminho_excel <- "Captação de Ofertas - Promobuzy - v1.xlsx"
 wb <- openxlsx::loadWorkbook(caminho_excel)
 openxlsx::writeData(wb, sheet = 2, dados)
 openxlsx::saveWorkbook(wb,caminho_excel, overwrite = T )
