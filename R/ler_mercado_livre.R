@@ -32,8 +32,6 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
     parcelamento <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__subtitles']") |>
       xml2::xml_text()
 
-    cupom <- NULL
-
     entrega <- xml2::xml_find_all(x, "//div[@id='shipping_summary'] | //div[@class= 'ui-pdp-media ui-pdp-shipping ui-pdp-shipping--md mb-12 ui-pdp-color--GREEN']//p[contains(@class, 'GREEN')]") |>
       xml2::xml_text() |>
       unique() |>
@@ -47,6 +45,13 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_text()
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    cupom <- httr2::request(link) |>
+      httr2::req_headers(`User-Agent` = "Mozilla/5.0") |>
+      httr2::req_perform() |>
+      httr2::resp_body_html() |>
+      xml2::xml_find_first("//span[@class = 'poly-coupon']") |>
+      xml2::xml_text(trim = T)
 
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 

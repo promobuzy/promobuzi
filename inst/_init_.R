@@ -3,7 +3,7 @@
 lista_url <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
-lista_url <- c("https://mercadolivre.com/sec/2XZRNp6")
+lista_url <- c("https://mercadolivre.com/sec/17Bib8f")
 
 # informa diretorio onde dados devem ser salvos.
 diretorio <- "data-raw/"
