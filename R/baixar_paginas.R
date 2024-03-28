@@ -21,8 +21,9 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   purrr::walk2(lista_url,pagina , purrr::possibly(~{
 
-    nome_loja <- stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\\.]+)") |>
+    nome_loja <- stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\b]+)(?=\\.[^\\/]+)") |>
       stringr::str_replace_all("www.","")
+
 
     ## extrai link absoluto mercado livre
     if(stringr::str_detect(nome_loja, "mercado") == T){
@@ -57,7 +58,9 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
 
 
+stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\b]+)(?=\\.[^\\/]+)")
 
+stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?[^\\.]+(?:\\.[^\\/]+)?")
 
 
 
