@@ -1,4 +1,4 @@
-busca_frete_mglu <- function(content, cep = NULL) {
+busca_frete_mglu <- function(conteudo, cep = NULL) {
 
   if(is.null(cep)){
     cep <- "12605530"
@@ -9,9 +9,13 @@ busca_frete_mglu <- function(content, cep = NULL) {
 
   url2 <- "https://federation.magazineluiza.com.br/graphql"
 
-  script <- xml2::xml_find_first(content,".//script[@id= '__NEXT_DATA__']") |>
+  script <- xml2::xml_find_first(conteudo,".//script[@id= '__NEXT_DATA__']") |>
     xml2::xml_text() |>
     jsonlite::fromJSON()
+
+  if(is.null(script)){
+    return(NULL)
+  }
 
   subcategoryId <-purrr::pluck(script,"props","pageProps","structure","route","subCategoryId")
   height <- purrr::pluck(script,"props","pageProps","data","product","dimensions","height")
@@ -65,6 +69,12 @@ busca_frete_mglu <- function(content, cep = NULL) {
   if(is.null(r2$error)){
     dados <- r2$data$shipping$deliveries
 
+    dados <- list(
+        prazo = purrr::pluck(dados,1,"modalities",1,"shippingTime","description"),
+        customer_cost = purrr::pluck(dados,1,"modalities",1,"cost","customer"),
+        politica_unificada = purrr::pluck(dados,1,"modalities",1,"campaigns",1,"name"),
+        politica = purrr::pluck(dados,1,"modalities",2,"shippingTime","description")
+      )
 
     return(dados)
 

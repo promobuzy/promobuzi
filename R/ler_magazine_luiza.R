@@ -4,35 +4,54 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
   if(is.null(arquivos)){
 
     arquivos <- list.files(diretorio, full.names = T) |>
-      stringr::str_subset("magazinevoce|magazine")
+      stringr::str_subset("magazinevoce|magazine|magalu")
   }
 
-  purrr::map_dfr(arquivos, purrr::possibly(~{
+  conteudo <- purrr::map(arquivos, ~xml2::read_html(.x, encoding = "UTF-8"))
 
-    content <- .x |>
-      xml2::read_html(encoding = "UTF-8")
+  links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
+    tibble::as_tibble() |>
+    tidyr::separate(value, c("path","link","index"), sep =",", convert = T)
 
-    titulo <- xml2::xml_find_first(content, ".//h1") |>
+
+  purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
+
+    x <- conteudo[[.x]]
+
+    titulo <- xml2::xml_find_first(x, ".//h1") |>
       xml2::xml_text()
 
     texto_opcional <- NA
 
-    preco_novo <- xml2::xml_find_first(content, "//p[@data-testid= 'price-value'] ") |>
+    preco_novo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-value'] ") |>
       xml2::xml_text()
 
-    preco_antigo <- xml2::xml_find_first(content, "//p[@data-testid= 'price-original'] ") |>
+    preco_antigo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-original'] ") |>
       xml2::xml_text()
 
-    parcelamento <- xml2::xml_find_first(content, "//p[@data-testid= 'installment'] ") |>
+    parcelamento <- xml2::xml_find_first(x, "//p[@data-testid= 'installment'] ") |>
       xml2::xml_text()
 
-    desconto <- xml2::xml_find_first(content, "//span[@class= 'sc-hYmls fnoFMk'] ") |>
+    pagamento <- xml2::xml_find_first(x, "//span[@data-testid= 'in-cash'] ") |>
       xml2::xml_text()
 
-    entrega <- busca_frete_mglu(content) |>
-      {\(dados) paste("Frete", "|", dados[[1]]$modalities[[1]]$cost$customer, "|", dados[[1]]$modalities[[1]]$shippingTime$description)} ()
+    paste("Frete", "Consultar Região")
 
-    dados <- tibble::tibble(loja = "Magazine Luiza", titulo, texto_opcional, preco_novo, preco_antigo, parcelamento, desconto, entrega)
+
+    entrega <- busca_frete_mglu(conteudo = x) |>
+      {\(dados)dplyr::case_when(
+        !is.null(dados$politica) && stringr::str_detect(dados$politica, "Retire na") ~ "Frete Grátis, retire na loja",
+        !is.null(dados$customer_cost) && stringr::str_detect(dados$customer_cost , "^0") ~ "Frete Grátis, aproveite!",
+        TRUE ~  "Frete: Consultar Região"
+      )}()
+
+    cupom <- NA
+
+    link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25828")
 
 
   }, NULL), .progress = TRUE)

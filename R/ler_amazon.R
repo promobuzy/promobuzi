@@ -53,7 +53,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
-    tibble::tibble(titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, entrega, link, loja = "25827" , index = index )
+    tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25827")
 
   }, NULL), .progress = TRUE)
 }
