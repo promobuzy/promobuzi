@@ -24,7 +24,7 @@ dados <- dplyr::bind_rows(dados_amz, dados_mcl)
 
 # Salva dados em formato xlsx na pata raiz, pode informar o diretorio completo "{seu/caminho/personalizado}/dados.xlsx"
 
-caminho_excel <- "Captação de Ofertas - Promobuzy - v1.xlsx"
+caminho_excel <- "Automação - Amazon.xlsx"
 wb <- openxlsx::loadWorkbook(caminho_excel)
 openxlsx::writeData(wb, sheet = 2, dados)
 openxlsx::saveWorkbook(wb,caminho_excel, overwrite = T )
