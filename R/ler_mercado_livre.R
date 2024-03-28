@@ -17,7 +17,6 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     x <- conteudo[[.x]]
 
-
     titulo <- xml2::xml_find_first(x, ".//h1") |>
       xml2::xml_text()
 
