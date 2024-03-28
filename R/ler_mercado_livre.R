@@ -41,7 +41,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       paste(collapse = " ") |>
       (\(texto)dplyr::case_when(
         stringr::str_detect(texto, "[gG]r[áa]ti[sS]") ~ "Frete Grátis",
-        TRUE ~ paste("Frete", "Consultar Região")
+        TRUE ~ "Frete: Consultar Região"
       ))()
 
     pagamento <- xml2::xml_find_first(x, ".//span[@class ='ui-pdp-price__second-line__text']") |>

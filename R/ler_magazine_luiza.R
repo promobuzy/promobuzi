@@ -21,7 +21,8 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
     titulo <- xml2::xml_find_first(x, ".//h1") |>
       xml2::xml_text()
 
-    texto_opcional <- NA
+    texto_opcional <- xml2::xml_find_first(x, ".//div[@data-testid= 'wrapper-badge']//img") |>
+      xml2::xml_attr("src")
 
     preco_novo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-value'] ") |>
       xml2::xml_text()
@@ -34,9 +35,6 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
     pagamento <- xml2::xml_find_first(x, "//span[@data-testid= 'in-cash'] ") |>
       xml2::xml_text()
-
-    paste("Frete", "Consultar Região")
-
 
     entrega <- busca_frete_mglu(conteudo = x) |>
       {\(dados)dplyr::case_when(
