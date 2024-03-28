@@ -1,13 +1,7 @@
 
 # informa lista de urls para baixar, pode vir de uma planilha em excel.
-
-<<<<<<< HEAD
-lista_url <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 2, colNames = F) |>
-=======
-lista <- openxlsx::read.xlsx("Captação de Ofertas - Promobuzy - v1.xlsx",sheet = 1, colNames = F) |>
->>>>>>> 9784941ff8897f2fde96cf94c3cc6bfba6013504
+lista_url <- openxlsx::read.xlsx("Automação - Amazon.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
-
 
 lista_url <- c("https://mercadolivre.com/sec/2XZRNp6")
 
