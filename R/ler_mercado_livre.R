@@ -52,7 +52,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
         httr2::req_headers(`User-Agent` = "Mozilla/5.0") |>
         httr2::req_perform() |>
         httr2::resp_body_html() |>
-        xml2::xml_find_first("//span[(@class,'poly-price__installments')]") |>
+        xml2::xml_find_first("//span[contains(@class,'poly-price__installments')]") |>
         xml2::xml_text(trim = T)
     }
 

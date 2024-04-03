@@ -3,7 +3,7 @@
 lista_url <- openxlsx::read.xlsx("Captação de Ofertas.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
-lista_url <- c("https://amzn.to/3IWCa4g")
+lista_url <- c("https://mercadolivre.com/sec/2dvR7gU")
 
 # informa diretorio onde dados devem ser salvos.
 diretorio <- "data-raw/"
