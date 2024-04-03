@@ -37,11 +37,16 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     preco_antigo <- xml2::xml_find_first(x, ".//span[@data-testid='price-part']//span[@class='andes-money-amount__fraction']") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
 
     preco_novo <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__second-line']//span[@data-testid='price-part']") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
+
+    # corrigi preço antigo
+    if(preco_antigo == preco_novo){
+      preco_antigo <- NA
+      }
 
     parcelamento <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__subtitles']") |>
       xml2::xml_text()

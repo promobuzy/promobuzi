@@ -31,11 +31,11 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
     preco_novo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-value'] ") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
 
     preco_antigo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-original'] ") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
 
     parcelamento <- xml2::xml_find_first(x, "//p[@data-testid= 'installment'] ") |>
       xml2::xml_text()
