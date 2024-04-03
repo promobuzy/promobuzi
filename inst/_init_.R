@@ -1,7 +1,6 @@
 
 # informa lista de urls para baixar, pode vir de uma planilha em excel.
 lista_url <- openxlsx::read.xlsx("Captação de Ofertas.xlsx",sheet = 1, colNames = F) |>
-  dplyr::filter(stringr::str_detect(X1, "magalu")) |>
   dplyr::pull()
 
 lista_url <- c("https://amzn.to/3IWCa4g")
