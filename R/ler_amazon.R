@@ -26,12 +26,12 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     preco_antigo <- xml2::xml_find_first(x, ".//span[@class='a-price a-text-price' and @data-a-strike='true']") |>
       xml2::xml_text(trim = T) |>
       purrr::possibly(~.[1], otherwise = NA) () |>
-      stringr::str_extract("\\d+,\\d{2}")
+      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
 
     preco_novo <- xml2::xml_find_all(x,  ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay'] | .//div[@class='a-section a-spacing-none aok-align-center']//span[@class='a-offscreen']") |>
       xml2::xml_text(trim = T) |>
       purrr::possibly(~.[1], otherwise = NA) () |>
-      stringr::str_extract("\\d+,\\d{2}")
+      stringr::str_extract("\\d+.?\\d+,?\\d{2}")
 
 
     parcelamento <- xml2::xml_find_first(x, ".//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
@@ -48,7 +48,9 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     pagamento <- xml2::xml_find_first(x, ".//div[@id='oneTimePaymentPrice_feature_div']//span[@class ='a-size-base a-color-secondary']") |>
       xml2::xml_text()
 
-    cupom <- NA
+    cupom <- xml2::xml_find_first(x, "//label[contains(@id,'couponText')]") |>
+      xml2::xml_text(trim = T) |>
+      stringr::str_extract(".*?%")
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]

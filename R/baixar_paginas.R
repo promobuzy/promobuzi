@@ -13,7 +13,7 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
   unlink(arquivos)
 
   h <-  c(
-    `User-Agent` = "Mozilla/5.0",
+    `User-Agent` = "Mozilla/5.0 (Linux; Nexus 5 Build/MRA58N)",
     `Accept-Language` = "pt-BR,pt;q=0.8",
     `Accept-Encoding` = "gzip, deflate, br",
     `Accept`= 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
@@ -35,6 +35,10 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
         xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
         xml2::xml_attr("href")
 
+      if(is.na(.x)){
+        .x <- .c
+      }
+
     } else {
       .c <- .x
     }
@@ -55,12 +59,6 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   }, NULL))
 }
-
-
-
-stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\b]+)(?=\\.[^\\/]+)")
-
-stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?[^\\.]+(?:\\.[^\\/]+)?")
 
 
 
