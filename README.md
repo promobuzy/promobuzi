@@ -13,7 +13,7 @@ Estrutura do Repositório
 
 - init: Contém todas as configurações necessárias para rodar o código.
 
-- Funcionalidades
+Funcionalidades
 
 Este projeto inclui scripts para realizar web scraping das seguintes lojas:
 
