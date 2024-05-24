@@ -1,5 +1,4 @@
-Projeto PromoBuzi
-Bem-vindo ao repositório do projeto PromoBuzi. Este projeto contém scripts e ferramentas para realizar web scraping de links de várias lojas e salvar os dados em arquivos Excel.
+>Projeto PromoBuzi
 
 Estrutura do Repositório
 
