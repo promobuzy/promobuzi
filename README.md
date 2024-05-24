@@ -17,7 +17,9 @@ Funcionalidades
 Este projeto inclui scripts para realizar web scraping das seguintes lojas:
 
 >Amazon
+>
 >Mercado Livre
+>
 >Magazine Luiza
 
 Os dados coletados são salvos em arquivos Excel separados e, posteriormente, combinados em um único arquivo.
