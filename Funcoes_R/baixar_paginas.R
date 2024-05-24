@@ -2,7 +2,7 @@
 baixar_paginas <- function(lista_url = NULL, diretorio = "."){
 
   if(is.null(diretorio)){
-    diretorio <- "data-raw/"
+    diretorio <- "logs_automacao/"
 
   }
 
@@ -19,11 +19,23 @@ baixar_paginas <- function(lista_url = NULL, diretorio = "."){
     `Accept`= 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
     `Referer`= 'https://www.google.com/')
 
+
+  pb <- progress::progress_bar$new(
+    format = " Processing [:bar] :percent in :elapsed | ETA: :eta",
+    total = length(lista_url),
+    clear = FALSE,
+    width = 60
+  )
+
+
+  message(glue::glue("Baixando {length(lista_url)} paginas da web."))
+
   purrr::walk2(lista_url,pagina , purrr::possibly(~{
+
+    pb$tick()
 
     nome_loja <- stringr::str_extract(.x, "(?<=\\/\\/)(?:www\\.)?([^\b]+)(?=\\.[^\\/]+)") |>
       stringr::str_replace_all("www.","")
-
 
     ## extrai link absoluto mercado livre
     if(stringr::str_detect(nome_loja, "mercado") == T){

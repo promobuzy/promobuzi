@@ -7,15 +7,40 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       stringr::str_subset("magazinevoce|magazine|magalu")
   }
 
+  qtt_arquivos <- length(arquivos)
 
-  conteudo <- purrr::map(arquivos, ~xml2::read_html(.x, encoding = "UTF-8"))
+  # Criar a barra de progresso
+  pb <- progress::progress_bar$new(
+    format = "  Processing [:bar] :percent in :elapsed | ETA: :eta",
+    total = qtt_arquivos,
+    clear = FALSE,
+    width = 60
+  )
 
-  links <- readr::read_lines(paste0(diretorio,"links.txt")) |>
+  message(glue::glue("Etapa 1/2 - Lendo Conteúdo HTML de {qtt_arquivos} arquivos"))
+
+  conteudo <- purrr::map(arquivos, function(file) {
+    pb$tick()  # Atualizar a barra de progresso
+    xml2::read_html(file, encoding = "UTF-8")
+  })
+
+  links <- readr::read_lines(paste0(diretorio,"/links.txt")) |>
     tibble::as_tibble() |>
     tidyr::separate(value, c("path","link","index"), sep =",", convert = T)
 
+  # Criar a barra de progresso
+  pb <- progress::progress_bar$new(
+    format = "  Processing [:bar] :percent in :elapsed | ETA: :eta",
+    total = qtt_arquivos,
+    clear = FALSE,
+    width = 60
+  )
+
+  message("Etapa 2/2 - Extraíndo Conteúdo")
 
   purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
+
+    pb$tick()
 
     x <- conteudo[[.x]]
 
@@ -43,12 +68,23 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
     pagamento <- xml2::xml_find_first(x, "//span[@data-testid= 'in-cash'] ") |>
       xml2::xml_text()
 
-    entrega <- busca_frete_mglu(conteudo = x) |>
+
+    source("~/Projetos/promobuzi/Funcoes_R/func_busca_frete_mglu.R")
+
+    entrega <- tryCatch({
+      busca_frete_mglu(conteudo = x) |>
       {\(dados)dplyr::case_when(
-        !is.null(dados$politica) && stringr::str_detect(dados$politica, "Retire na") ~ "Frete Grátis, retire na loja!",
-        !is.null(dados$customer_cost) && stringr::str_detect(dados$customer_cost , "^0") ~ "Frete Grátis, aproveite!",
+        !is.null(dados$customer_cost) && stringr::str_detect(dados$customer_cost, "^0") ~ "Frete Grátis, aproveite!",
+
+        !is.null(dados$politica1) && stringr::str_detect(dados$politica1 , "Retire na") ~ "Frete Grátis, retire na loja!",
+
+        !is.null(dados$politica2) && stringr::str_detect(dados$politica2 , "Retire na") ~ "Frete Grátis, retire na loja!",
+
         TRUE ~  "Frete: Consultar Região"
       )}()
+    }, error = function(e) {
+      "NA"
+    })
 
     cupom <- NA
 
@@ -59,6 +95,6 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
     tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25828")
 
 
-  }, NULL), .progress = TRUE)
+  }, NULL))
 }
 
