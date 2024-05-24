@@ -3,17 +3,17 @@ Bem-vindo ao repositório do projeto PromoBuzi. Este projeto contém scripts e f
 
 Estrutura do Repositório
 
-link_IN: Diretório onde os arquivos .xlsx contendo os links para web scraping devem ser colocados.
+- link_IN: Diretório onde os arquivos .xlsx contendo os links para web scraping devem ser colocados.
 
-link_OUT: Diretório para todos os arquivos gerados.
+- link_OUT: Diretório para todos os arquivos gerados.
 
-Funcoes_R: Diretório contendo os scripts R para realizar o web scraping de diferentes lojas.
+- Funcoes_R: Diretório contendo os scripts R para realizar o web scraping de diferentes lojas.
 
-logs_automacao: Diretório onde os dados brutos das páginas devem ser salvos.
+- logs_automacao: Diretório onde os dados brutos das páginas devem ser salvos.
 
-init: Contém todas as configurações necessárias para rodar o código.
+- init: Contém todas as configurações necessárias para rodar o código.
 
-Funcionalidades
+- Funcionalidades
 
 Este projeto inclui scripts para realizar web scraping das seguintes lojas:
 
