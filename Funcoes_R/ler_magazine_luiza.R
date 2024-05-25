@@ -50,9 +50,18 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
     texto_opcional <- xml2::xml_find_first(x, ".//div[@data-testid= 'wrapper-badge']//img") |>
       xml2::xml_attr("src") |>
       {\(texto)dplyr::case_when(
-        texto == "https://i.mlcdn.com.br/selo-ml/65x50/920ad65a-ccf2-11ee-b5d3-866f14f5ec6c.png" ~ "Oferta do Dia",
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/920ad65a-ccf2-11ee-b5d3-866f14f5ec6c.png") ~ "👀 OFERTA DO DIA",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/b225b3ba-c1fd-11ee-97a5-02566cc712d2.png") ~ "⚡ Oferta Relâmpago",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/04c128f0-dd8a-11ee-97a5-02566cc712d2.png") ~ "📺 Viu essa oferta na TV?",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
+
         TRUE ~ texto
+
       )}()
+
 
     preco_novo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-value'] ") |>
       xml2::xml_text() |>
@@ -76,9 +85,9 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       {\(dados)dplyr::case_when(
         !is.null(dados$customer_cost) && stringr::str_detect(dados$customer_cost, "^0") ~ "Frete Grátis, aproveite!",
 
-        !is.null(dados$politica1) && stringr::str_detect(dados$politica1 , "Retire na") ~ "Frete Grátis, retire na loja!",
+        !is.null(dados$politica1) && stringr::str_detect(dados$politica1 , "Retire na") ~ "Retire na loja e não pague frete",
 
-        !is.null(dados$politica2) && stringr::str_detect(dados$politica2 , "Retire na") ~ "Frete Grátis, retire na loja!",
+        !is.null(dados$politica2) && stringr::str_detect(dados$politica2 , "Retire na") ~ "Retire na loja e não pague frete",
 
         TRUE ~  "Frete: Consultar Região"
       )}()
