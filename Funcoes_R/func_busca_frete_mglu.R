@@ -17,6 +17,9 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
     return(NULL)
   }
 
+  json_data <- jsonlite::toJSON(script, pretty = TRUE)
+  write(json_data, file = "script_data.json")
+
   subcategoryId <-purrr::pluck(script,"props","pageProps","structure","route","subCategoryId")
   height <- purrr::pluck(script,"props","pageProps","data","product","dimensions","height")
   length <- purrr::pluck(script,"props","pageProps","data","product","dimensions","length")
@@ -24,7 +27,10 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
   width <- purrr::pluck(script,"props","pageProps","data","product","dimensions","width")
   price <- purrr::pluck(script,"props","pageProps","data","product","price","fullPrice") |>
     as.double()
-  product_id <- purrr::pluck(script,"props","pageProps","data","product","id")
+  #product_id <- purrr::pluck(script,"props","pageProps","data","product","id")
+  categoryId <- toupper(purrr::pluck(script,"query","path4"))
+  sellerID <- purrr::pluck(script,"props","pageProps","data","product","seller","id")
+  product_id <- purrr::pluck(script,"props","pageProps","data","product","seller","sku")
 
   json_string <- sprintf(
     '{"operationName": "shippingQuery",
@@ -32,13 +38,13 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
       "variables": {
         "shippingRequest": {
           "metadata": {
-            "categoryId": "ED",
+            "categoryId": "%s",
             "clientId": "",
             "organizationId": "magazine_luiza",
             "pageName": "",
             "partnerId": "0",
             "salesChannelId": "4",
-            "sellerId": "magazineluiza",
+            "sellerId":"%s",
             "subcategoryId": "%s"
           },
           "product": {
@@ -56,7 +62,7 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
           "zipcode": "%s"
         }
       }
-    }', subcategoryId, height,length,weight,width,product_id,price, cep)
+    }', categoryId,sellerID, subcategoryId, height,length,weight,width,product_id,price, cep)
 
   body_json <- jsonlite::fromJSON(json_string)
 
@@ -69,11 +75,13 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
   if(is.null(r2$error)){
     dados <- r2$data$shipping$deliveries
 
+
     dados <- list(
         prazo = purrr::pluck(dados,1,"modalities",1,"shippingTime","description"),
         customer_cost = purrr::pluck(dados,1,"modalities",1,"cost","customer"),
         politica_unificada = purrr::pluck(dados,1,"modalities",1,"campaigns",1,"name"),
-        politica = purrr::pluck(dados,1,"modalities",2,"shippingTime","description")
+        politica1 = purrr::pluck(dados,1,"modalities",1,"shippingTime","description"),
+        politica2 = purrr::pluck(dados,1,"modalities",2,"shippingTime","description")
       )
 
     return(dados)

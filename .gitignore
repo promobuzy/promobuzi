@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 *.xlsx
-data-raw
+*.html
+*.json

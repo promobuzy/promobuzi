@@ -1,0 +1,7 @@
+mercadolivre_arquivo_1_extracao.html,https://mercadolivre.com/sec/13AYmQL,1
+amzn_arquivo_2_extracao.html,https://amzn.to/4aNNSK8,2
+mercadolivre_arquivo_3_extracao.html,https://mercadolivre.com/sec/1GwmepV,3
+amzn_arquivo_4_extracao.html,https://amzn.to/3TFiPKM,4
+divulgador.magalu_arquivo_5_extracao.html,https://divulgador.magalu.com/g3_Sgi5l,5
+amzn_arquivo_6_extracao.html,https://amzn.to/3TCFEPr,6
+amzn_arquivo_7_extracao.html,https://amzn.to/3INT1pA,7
