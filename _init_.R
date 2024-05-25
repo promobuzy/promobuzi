@@ -1,5 +1,5 @@
 
-# informa diretorio onde dados devem ser salvos.
+# informa diretorio onde dados brutos das paginas devem ser salvos.
 diretorio <- "logs_automacao/"
 
 # nome do arquivo excel de Links IN - Input de links para webscraping
@@ -10,12 +10,27 @@ lista_url <- openxlsx::read.xlsx(path,sheet = 1, colNames = F) |>
   dplyr::pull()
 
 # Usado para teste único
-url_teste <- c("https://divulgador.magalu.com/gnF34NqT")
+lista_url <- c("https://divulgador.magalu.com/GhmcUftQ")
+
 
 ## Baixa Paginas da Web.
 source('~/Projetos/promobuzi/Funcoes_R/baixar_paginas.R')
 baixar_paginas(lista_url = lista_url, diretorio = diretorio)
 
+
+source('~/Projetos/promobuzi/Funcoes_R/ler_lojas.R')
+le_lojas (AMZ = 1,
+          ML = 1,
+          MGL = 1,
+          dir_funcoes_R = "~/Projetos/promobuzi/Funcoes_R",
+          dir_output = "~/Projetos/promobuzi/Links_OUT",
+          dir_logs  = '~/Projetos/promobuzi/logs_automacao')
+
+
+
+
+  #/// Teste de leitura de dados /// Utilizado na camada de desenvolvimento
+#================================================================================================
 
 # Lê arquivos, para cada loja existe um função especifica para ler dados da pagina
 source('~/Projetos/promobuzi/Funcoes_R/ler_amazon.R')
@@ -31,11 +46,8 @@ dados_mgl <- ler_magazine_luiza(diretorio = diretorio)
 # Unifica data frames
 dados <- dplyr::bind_rows(dados_amz, dados_mcl, dados_mgl)
 
-# Salva dados em formato xlsx na pata raiz, pode informar o diretorio completo "{seu/caminho/personalizado}/dados.xlsx"
 
-caminho_excel <- "Links_OUT/dados.xlsx"
-wb <- openxlsx::loadWorkbook(caminho_excel)
-openxlsx::writeData(wb, sheet = 2, dados)
-openxlsx::saveWorkbook(wb,caminho_excel, overwrite = T )
+
+
 
 
