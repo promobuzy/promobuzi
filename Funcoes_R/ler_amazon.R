@@ -81,7 +81,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     entrega <- xml2::xml_find_first(x, ".//div[@id = 'mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE']") |>
       xml2::xml_text(trim = T) |>
       (\(texto)dplyr::case_when(
-        stringr::str_detect(texto,"primeiro | 1º") ~ "Frete Grátis - 1° Pedido",
+        stringr::str_detect(texto,"primeiro | 1º") ~ "Frete Grátis - 1º Pedido",
         stringr::str_detect(texto,"Entrega GRÁTIS") ~ "Frete Grátis, aproveite!",
         stringr::str_detect(texto,"Entrega") ~ "Frete: Consultar Região",
       )) ()
