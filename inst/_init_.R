@@ -1,6 +1,6 @@
 
 # informa lista de urls para baixar, pode vir de uma planilha em excel.
-lista_url <- openxlsx::read.xlsx("Captação de Ofertas.xlsx",sheet = 1, colNames = F) |>
+lista_url <- openxlsx::read.xlsx("Captação de Ofertas - Promobuzy - v3.xlsx",sheet = 1, colNames = F) |>
   dplyr::pull()
 
 lista_url <- c("https://amzn.to/3xjupTk")
@@ -26,7 +26,7 @@ dados <- dplyr::bind_rows(dados_amz, dados_mcl, dados_mgl)
 
 # Salva dados em formato xlsx na pata raiz, pode informar o diretorio completo "{seu/caminho/personalizado}/dados.xlsx"
 
-caminho_excel <- "Automação - Amazon.xlsx"
+caminho_excel <- "Captação de Ofertas - Promobuzy - v3.xlsx"
 wb <- openxlsx::loadWorkbook(caminho_excel)
 openxlsx::writeData(wb, sheet = 2, dados)
 openxlsx::saveWorkbook(wb,caminho_excel, overwrite = T )

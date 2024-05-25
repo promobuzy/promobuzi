@@ -66,7 +66,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       unique() |>
       paste(collapse = " ") |>
       (\(texto)dplyr::case_when(
-        stringr::str_detect(texto, "[gG]r[áa]ti[sS]") ~ "Frete Grátis",
+        stringr::str_detect(texto, "[gG]r[áa]ti[sS]") ~ "Frete Grátis, aproveite!",
         TRUE ~ "Frete: Consultar Região"
       ))()
 
