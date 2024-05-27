@@ -1,1 +1,16 @@
-amzn_arquivo_1_extracao.html,https://amzn.to/4aVoz9j,1
+amzn_arquivo_1_extracao.html,https://amzn.to/3R2ILyj,1
+mercadolivre_arquivo_2_extracao.html,https://mercadolivre.com/sec/1jXpu1C,2
+amzn_arquivo_3_extracao.html,https://amzn.to/4aHiTPA,3
+mercadolivre_arquivo_4_extracao.html,https://mercadolivre.com/sec/2XpwQaX,4
+amzn_arquivo_5_extracao.html,https://amzn.to/3w41zGr,5
+amzn_arquivo_6_extracao.html,https://amzn.to/3IE3OTc,6
+amzn_arquivo_7_extracao.html,https://amzn.to/3UY4poP,7
+mercadolivre_arquivo_8_extracao.html,https://mercadolivre.com/sec/1WQW3Lw,8
+mercadolivre_arquivo_9_extracao.html,https://mercadolivre.com/sec/2tY2oud,9
+mercadolivre_arquivo_10_extracao.html,https://mercadolivre.com/sec/1aAGyhu,10
+amzn_arquivo_11_extracao.html,https://amzn.to/3TvytqY,11
+amzn_arquivo_12_extracao.html,https://amzn.to/3PBPlem,12
+mercadolivre_arquivo_13_extracao.html,https://mercadolivre.com/sec/1e3raG1,13
+divulgador.magalu_arquivo_14_extracao.html,https://divulgador.magalu.com/JsD-zhLD,14
+divulgador.magalu_arquivo_15_extracao.html,https://divulgador.magalu.com/Fstm2CdF,15
+divulgador.magalu_arquivo_16_extracao.html,https://divulgador.magalu.com/zghw1qB1,16

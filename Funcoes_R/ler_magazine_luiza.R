@@ -58,6 +58,8 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
 
+        stringr::str_detect(texto,"https://mvc.mlcdn.com.br/magazinevoce/img/common/black-app-parceiro.png") ~ "🔥 Preço Exclusivo",
+
         TRUE ~ texto
 
       )}()
