@@ -1,6 +1,6 @@
 
 # informa diretorio onde dados brutos das paginas devem ser salvos.
-diretorio <- "logs_automacao/"
+diretorio <- "logs_automacao_dev/"
 
 # nome do arquivo excel de Links IN - Input de links para webscraping
 path <- "Links_IN/lista_links.xlsx"
@@ -10,7 +10,7 @@ lista_url <- openxlsx::read.xlsx(path,sheet = 1, colNames = F) |>
   dplyr::pull()
 
 # Usado para teste único
-lista_url <- c("https://divulgador.magalu.com/GhmcUftQ")
+lista_url <- c("https://amzn.to/482UJ1O")
 
 
 ## Baixa Paginas da Web.
@@ -24,12 +24,11 @@ le_lojas (AMZ = 1,
           MGL = 1,
           dir_funcoes_R = "~/Projetos/promobuzi/Funcoes_R",
           dir_output = "~/Projetos/promobuzi/Links_OUT",
-          dir_logs  = '~/Projetos/promobuzi/logs_automacao')
+          dir_logs  = '~/Projetos/promobuzi/logs_automacao_dev')
 
+length(list.files(diretorio))
 
-
-
-  #/// Teste de leitura de dados /// Utilizado na camada de desenvolvimento
+#/// Teste de leitura de dados /// Utilizado na camada de desenvolvimento
 #================================================================================================
 
 # Lê arquivos, para cada loja existe um função especifica para ler dados da pagina

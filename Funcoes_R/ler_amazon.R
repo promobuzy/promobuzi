@@ -7,6 +7,14 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       stringr::str_subset("amazon|amzn")
   }
 
+  converte_numero <- function(numero){
+    numero <- stringr::str_replace_all(numero, stringr::fixed("."), "")
+    numero <- stringr::str_replace_all(numero, stringr::fixed(","), ".")
+    numero <- as.numeric(numero)
+    numero <- format(numero, nsmall = 2, big.mark = ".", decimal.mark = ",")
+    return(numero)
+  }
+
   qtt_arquivos <- length(arquivos)
 
   # Criar a barra de progresso
@@ -58,7 +66,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_text(trim = T) |>
       (\ (txt) if(!is.na(depara[txt])) depara[txt] else txt )() |>
       purrr::pluck(1)
-
+    if(is.null(texto_opcional)){ texto_opcional <- NA}
 
     regex_preco <- "R\\$\\s*\\d{1,3}(?:\\.?\\d{3})*(?:,\\d{2})?"
 
@@ -66,14 +74,16 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_text(trim = T) |>
       purrr::possibly(~.[1], otherwise = NA) () |>
       stringr::str_extract(regex_preco) |>
-      stringr::str_replace_all("R\\$\\s*", "")
+      stringr::str_replace_all("R\\$\\s*", "") |>
+      converte_numero()
 
     ## ERRO PRECO NOVO
     preco_novo <- xml2::xml_find_all(x,  ".//span[@class='a-price aok-align-center reinventPricePriceToPayMargin priceToPay'] | .//div[@class='a-section a-spacing-none aok-align-center']//span[@class='a-offscreen']") |>
       xml2::xml_text(trim = T) |>
-      purrr::possibly(~.[1], otherwise = NA) () |>
+      purrr::possibly(~.[1], otherwise = NA)() |>
       stringr::str_extract(regex_preco) |>
-      stringr::str_replace_all("R\\$\\s*", "")
+      stringr::str_replace_all("R\\$\\s*", "") |>
+      converte_numero()
 
     parcelamento <- xml2::xml_find_first(x, ".//div[@id='installmentCalculator_feature_div']//span[@class ='best-offer-name a-text-bold']") |>
       xml2::xml_text()
@@ -103,7 +113,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
-    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
     tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25827")
 

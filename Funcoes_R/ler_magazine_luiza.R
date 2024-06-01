@@ -7,6 +7,14 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       stringr::str_subset("magazinevoce|magazine|magalu")
   }
 
+  converte_numero <- function(numero){
+    numero <- stringr::str_replace_all(numero, stringr::fixed("."), "")
+    numero <- stringr::str_replace_all(numero, stringr::fixed(","), ".")
+    numero <- as.numeric(numero)
+    numero <- format(numero, nsmall = 2, big.mark = ".", decimal.mark = ",")
+    return(numero)
+  }
+
   qtt_arquivos <- length(arquivos)
 
   # Criar a barra de progresso
@@ -67,11 +75,13 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
     preco_novo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-value'] ") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?") |>
+      converte_numero()
 
     preco_antigo <- xml2::xml_find_first(x, "//p[@data-testid= 'price-original'] ") |>
       xml2::xml_text() |>
-      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?")
+      stringr::str_extract("\\d{1,3}(\\.\\d{3})*(,\\d{2})?") |>
+      converte_numero()
 
     parcelamento <- xml2::xml_find_first(x, "//p[@data-testid= 'installment'] ") |>
       xml2::xml_text()
@@ -79,9 +89,7 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
     pagamento <- xml2::xml_find_first(x, "//span[@data-testid= 'in-cash'] ") |>
       xml2::xml_text()
 
-
     source("~/Projetos/promobuzi/Funcoes_R/func_busca_frete_mglu.R")
-
     entrega <- tryCatch({
       busca_frete_mglu(conteudo = x) |>
       {\(dados)dplyr::case_when(
@@ -101,7 +109,7 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
-    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
     tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25828")
 

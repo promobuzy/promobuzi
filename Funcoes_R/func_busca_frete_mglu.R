@@ -18,7 +18,6 @@ busca_frete_mglu <- function(conteudo, cep = NULL) {
   }
 
   json_data <- jsonlite::toJSON(script, pretty = TRUE)
-  write(json_data, file = "script_data.json")
 
   subcategoryId <-purrr::pluck(script,"props","pageProps","structure","route","subCategoryId")
   height <- purrr::pluck(script,"props","pageProps","data","product","dimensions","height")
