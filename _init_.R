@@ -1,6 +1,6 @@
 
 # informa diretorio onde dados brutos das paginas devem ser salvos.
-diretorio <- "logs_automacao_dev/"
+diretorio <- "logs_automacao/"
 
 # nome do arquivo excel de Links IN - Input de links para webscraping
 path <- "Links_IN/lista_links.xlsx"
@@ -24,7 +24,7 @@ le_lojas (AMZ = 1,
           MGL = 1,
           dir_funcoes_R = "~/Projetos/promobuzi/Funcoes_R",
           dir_output = "~/Projetos/promobuzi/Links_OUT",
-          dir_logs  = '~/Projetos/promobuzi/logs_automacao_dev')
+          dir_logs  = '~/Projetos/promobuzi/logs_automacao')
 
 length(list.files(diretorio))
 

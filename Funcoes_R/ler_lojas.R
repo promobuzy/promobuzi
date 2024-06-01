@@ -43,7 +43,6 @@ le_lojas <- function(AMZ = 0,
     }
   }
 
-
   if(MGL == 1){
     message(" 📖 Lendo dados MAGAZINE LUIZA")
     source(glue::glue('{dir_funcoes_R}/ler_magazine_luiza.R'))
