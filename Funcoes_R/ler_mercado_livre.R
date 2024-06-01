@@ -7,6 +7,14 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
   }
 
+  converte_numero <- function(numero){
+    numero <- stringr::str_replace_all(numero, stringr::fixed("."), "")
+    numero <- stringr::str_replace_all(numero, stringr::fixed(","), ".")
+    numero <- as.numeric(numero)
+    numero <- format(numero, nsmall = 2, big.mark = ".", decimal.mark = ",")
+    return(numero)
+  }
+
   qtt_arquivos <- length(arquivos)
 
   # Criar a barra de progresso
@@ -98,7 +106,8 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
         xml2::xml_find_first("//div[@class='poly-price__current']//span[contains(@class,'andes-money-amount')]") |>
         xml2::xml_text(trim = T) |>
         stringr::str_extract(regex_preco) |>
-        stringr::str_replace_all("R\\$\\s*", "")
+        stringr::str_replace_all("R\\$\\s*", "") |>
+        converte_numero()
 
       preco_antigo <- httr2::request(link) |>
         httr2::req_headers(`User-Agent` = "Mozilla/5.0") |>
@@ -107,20 +116,23 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
         xml2::xml_find_first("//div[@class='poly-component__price']//s[contains(@class,'andes-money-amount andes-money-amount--previous')]") |>
         xml2::xml_text(trim = T) |>
         stringr::str_extract(regex_preco) |>
-        stringr::str_replace_all("R\\$\\s*", "")
+        stringr::str_replace_all("R\\$\\s*", "")|>
+        converte_numero()
 
     } else {
 
       preco_antigo <- xml2::xml_find_first(x, ".//span[@data-testid='price-part']") |>
         xml2::xml_text() |>
         stringr::str_extract(regex_preco) |>
-        stringr::str_replace_all("R\\$\\s*", "")
+        stringr::str_replace_all("R\\$\\s*", "") |>
+        converte_numero()
 
 
       preco_novo <- xml2::xml_find_first(x, ".//div[@class='ui-pdp-price__second-line']//span[@data-testid='price-part']") |>
         xml2::xml_text() |>
         stringr::str_extract(regex_preco) |>
-        stringr::str_replace_all("R\\$\\s*", "")
+        stringr::str_replace_all("R\\$\\s*", "") |>
+        converte_numero()
     }
 
 
@@ -152,7 +164,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_text(trim = T)
 
 
-    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+    index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
     dados <- tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "34790")
 

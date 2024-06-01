@@ -10,7 +10,7 @@ lista_url <- openxlsx::read.xlsx(path,sheet = 1, colNames = F) |>
   dplyr::pull()
 
 # Usado para teste único
-lista_url <- c("https://divulgador.magalu.com/GhmcUftQ")
+lista_url <- c("https://amzn.to/482UJ1O")
 
 
 ## Baixa Paginas da Web.
@@ -26,10 +26,9 @@ le_lojas (AMZ = 1,
           dir_output = "~/Projetos/promobuzi/Links_OUT",
           dir_logs  = '~/Projetos/promobuzi/logs_automacao')
 
+length(list.files(diretorio))
 
-
-
-  #/// Teste de leitura de dados /// Utilizado na camada de desenvolvimento
+#/// Teste de leitura de dados /// Utilizado na camada de desenvolvimento
 #================================================================================================
 
 # Lê arquivos, para cada loja existe um função especifica para ler dados da pagina
