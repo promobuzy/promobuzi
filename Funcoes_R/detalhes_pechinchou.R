@@ -16,7 +16,7 @@ detalhes_pechinchou <- function(lista_url){
 
     pb$tick()
 
-    dados <- url |>
+    dados <- .x |>
       httr2::request() |>
       httr2::req_perform() |>
       httr2::resp_body_html()
