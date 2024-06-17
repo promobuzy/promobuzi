@@ -166,7 +166,20 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
-    dados <- tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "34790")
+    dados <- tibble::tibble(
+      index = index,
+      titulo,
+      texto_opcional,
+      preco_antigo,
+      preco_novo,
+      pagamento,
+      parcelamento,
+      cupom,
+      entrega,
+      loja = "34790",
+      link,
+      link_promobuzy = NA,
+      link_qualificados = NA)
 
   }, NULL))
 }

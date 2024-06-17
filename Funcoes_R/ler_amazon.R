@@ -113,9 +113,26 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
+    urls <- modificador_url_concorrente("magazine",link)
+
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
-    tibble::tibble(index = index, titulo, texto_opcional, preco_antigo, preco_novo, pagamento, parcelamento, cupom, entrega, link, loja = "25827")
+    tibble::tibble(
+      index = index,
+      titulo,
+      texto_opcional,
+      preco_antigo,
+      preco_novo,
+      pagamento,
+      parcelamento,
+      cupom,
+      entrega,
+      loja = "25827",
+      link,
+      link_promobuzy = urls[[1]],
+      link_qualificados = urls[[2]])
 
   }, NULL))
 }
