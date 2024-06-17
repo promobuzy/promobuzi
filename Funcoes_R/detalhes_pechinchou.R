@@ -49,7 +49,6 @@ detalhes_pechinchou <- function(lista_url){
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
     urls <- modificador_url_concorrente(loja,link_afiliado$url)
 
-
     tibble::tibble(
       link_whatsapp = .x,
       loja,
