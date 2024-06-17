@@ -29,7 +29,10 @@ detalhes_pechinchou <- function(lista_url){
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
       xml2::xml_text() |>
       jsonlite::fromJSON() |>
-      purrr::pluck("props", "pageProps", "promo", "short_url")
+      purrr::pluck("props", "pageProps", "promo", "short_url") |>
+      httr2::request() |>
+      httr2::req_headers(!!!h) |>
+      httr2::req_perform()
 
     produto <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
@@ -37,7 +40,7 @@ detalhes_pechinchou <- function(lista_url){
       jsonlite::fromJSON() |>
       purrr::pluck("props", "pageProps", "promo", "title")
 
-    tibble::tibble(link_whatsapp = .x, cupom, produto, link_afiliado)
+    tibble::tibble(link_whatsapp = .x, cupom, produto, link_afiliado$url)
 
   }, NULL))
 }
