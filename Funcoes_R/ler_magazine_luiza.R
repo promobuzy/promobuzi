@@ -62,7 +62,7 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/b225b3ba-c1fd-11ee-97a5-02566cc712d2.png") ~ "⚡ Oferta Relâmpago",
 
-        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/04c128f0-dd8a-11ee-97a5-02566cc712d2.png") ~ "📺 Viu essa oferta na TV?",
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/a7253b7c-dd71-11ee-97a5-02566cc712d2.png") ~ "📺 Viu essa oferta na TV?",
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
 
