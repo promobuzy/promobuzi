@@ -40,7 +40,23 @@ detalhes_pechinchou <- function(lista_url){
       jsonlite::fromJSON() |>
       purrr::pluck("props", "pageProps", "promo", "title")
 
-    tibble::tibble(link_whatsapp = .x, cupom, produto, link_afiliado$url)
+    loja <- dados |>
+      xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
+      xml2::xml_text() |>
+      jsonlite::fromJSON() |>
+      purrr::pluck("props", "pageProps", "promo", "store", "name")
+
+    source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
+    urls <- modificador_url_concorrente(loja,link_afiliado$url)
+
+    tibble::tibble(
+      link_whatsapp = .x,
+      loja,
+      cupom,
+      produto,
+      link_afiliado = link_afiliado$url,
+      link_promobuzy = urls[[1]],
+      link_qualificados = urls[[2]])
 
   }, NULL))
 }
