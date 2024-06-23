@@ -115,7 +115,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
-    urls <- modificador_url_concorrente("magazine",link)
+    urls <- modificador_url_concorrente("amazon",link)
 
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
