@@ -124,7 +124,7 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       parcelamento,
       cupom,
       entrega,
-      loja = "25828"
+      loja = "25828",
       link,
       link_promobuzy = urls[[1]],
       link_qualificados = urls[[2]])
