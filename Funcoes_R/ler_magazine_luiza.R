@@ -107,7 +107,15 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
     cupom <- NA
 
+    link_img <- xml2::xml_find_first(x, "//img[@data-testid='image-selected-thumbnail']") |>
+      xml2::xml_attr("src")
+
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+
+    id_img <- link_img |>
+      urltools::path() |>
+      stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
+      stringr::str_remove( "\\.")
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
     urls <- modificador_url_concorrente("magazine",link)
@@ -124,10 +132,12 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       parcelamento,
       cupom,
       entrega,
-      loja = "25828",
+      loja = "39835",
       link,
       link_promobuzy = urls[[1]],
-      link_qualificados = urls[[2]])
+      link_qualificados = urls[[2]],
+      link_img,
+      id_img)
 
 
   }, NULL))

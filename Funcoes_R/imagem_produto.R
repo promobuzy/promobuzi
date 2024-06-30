@@ -16,6 +16,7 @@ imagem_produto <- function(img_url,
     magick::image_read() |>
     magick::image_resize(paste0((width - margem), "x", (height - margem)))
 
+
   image_info <- magick::image_info(img)
   image_width <- image_info$width
   image_height <- image_info$height
@@ -31,3 +32,6 @@ imagem_produto <- function(img_url,
     magick::image_write(path = arquivo, format = formato)
 
 }
+
+
+

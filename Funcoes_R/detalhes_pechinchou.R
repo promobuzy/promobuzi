@@ -25,6 +25,18 @@ detalhes_pechinchou <- function(lista_url){
       xml2::xml_find_first(".//p[@class='TextCoupon']") |>
       xml2::xml_text()
 
+    preco_antigo <- dados |>
+      xml2::xml_find_first(".//p[contains(@class,'styles__OldPrice')]") |>
+      xml2::xml_text() |>
+      stringr::str_remove_all("R\\$") |>
+      stringr::str_squish()
+
+    preco_novo <- dados |>
+      xml2::xml_find_first(".//h3") |>
+      xml2::xml_text() |>
+      stringr::str_remove_all("R\\$") |>
+      stringr::str_squish()
+
     link_afiliado <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
       xml2::xml_text() |>
@@ -51,7 +63,11 @@ detalhes_pechinchou <- function(lista_url){
       loja,
       cupom,
       produto,
+      preco_antigo,
+      preco_novo,
       link_afiliado = link_afiliado$url)
 
   }, NULL))
 }
+
+

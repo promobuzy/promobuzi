@@ -111,6 +111,13 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
     }
 
+    link_img <- xml2::xml_find_first(x, "//div[@id='imgTagWrapperId']//img") |>
+      xml2::xml_attr("data-old-hires")
+
+    id_img <- link_img |>
+      urltools::path() |>
+      stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
+      stringr::str_remove( "\\.")
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
@@ -129,10 +136,12 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       parcelamento,
       cupom,
       entrega,
-      loja = "25827",
+      loja = "39836",
       link,
       link_promobuzy = urls[[1]],
-      link_qualificados = urls[[2]])
+      link_qualificados = urls[[2]],
+      link_img,
+      id_img)
 
   }, NULL))
 }

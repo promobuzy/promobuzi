@@ -163,6 +163,23 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_find_first("//span[@class = 'poly-coupon']") |>
       xml2::xml_text(trim = T)
 
+    link_img <- xml2::xml_find_first(x, ".//figure[@class='ui-pdp-gallery__figure']//img") |>
+      xml2::xml_attr("srcset") |>
+      stringr::str_split(" ") |>
+      purrr::map_chr(~ .x |> dplyr::first())
+
+    id_img <- link_img |>
+      urltools::path() |>
+      stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
+      stringr::str_remove( "\\.")
+
+    source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
+
+    if(stringr::str_detect(link,"pechinchou")) {
+      urls <- modificador_url_concorrente("mercadolivre",link)
+    } else {
+      urls <- list(link)
+    }
 
     index <- links$index[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")] |> as.integer()
 
@@ -176,10 +193,12 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       parcelamento,
       cupom,
       entrega,
-      loja = "34790",
+      loja = "39827",
       link,
-      link_promobuzy = NA,
-      link_qualificados = NA)
+      link_promobuzy  = urls[[1]],
+      link_qualificados = NA,
+      link_img,
+      id_img)
 
   }, NULL))
 }
