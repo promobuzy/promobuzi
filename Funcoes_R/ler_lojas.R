@@ -90,7 +90,7 @@ le_lojas <- function(AMZ = 0,
         width = 60
       )
 
-      purrr::walk(link_img[1:10], purrr::possibly( ~ {
+      purrr::walk(link_img, purrr::possibly( ~ {
 
         pb$tick()
 
