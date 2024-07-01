@@ -16,14 +16,17 @@ modificador_url_concorrente <- function(loja, url) {
       lapply(c("magazinepromobuzy" , "magazinequalificadosbr"), function(tag) {
 
 
-        qtt_path <- urltools::url_parse(teste) |>
+        qtt_path <- urltools::url_parse(url) |>
           dplyr::pull(path) |>
-          length()
+          stringr::str_split("/") |>
+          purrr::map_int(~{length(.x)})
+
 
         if(qtt_path == 1){
 
           long_url <- url |>
             httr2::request() |>
+            httr2::req_headers(`User-Agent` = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0") |>
             httr2::req_perform()
 
           url <- long_url$url

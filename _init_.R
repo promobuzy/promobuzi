@@ -10,7 +10,7 @@ lista_url <- openxlsx::read.xlsx(path,sheet = 1, colNames = F) |>
   dplyr::pull()
 
 # Usado para teste único
-lista_url <- c("https://amzn.to/482UJ1O")
+lista_url <- c("https://www.magazinevoce.com.br/magazinepromobuzy/central-multimidia-evolve-multi-tela-7pol-com-espelhamento-ios-android-gp348/p/hffj4dfe8j/au/aucm/")
 
 
 ## Baixa Paginas da Web.
@@ -27,7 +27,6 @@ le_lojas (AMZ = 1,
           dir_logs  = '~/Projetos/promobuzi/logs_automacao')
 
 length(list.files(diretorio))
-
 
 
 

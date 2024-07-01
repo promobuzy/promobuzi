@@ -55,7 +55,6 @@ le_lojas <- function(AMZ = 0,
     arquivos <- append(arquivos, file.path(dir_output, nome_arquivo_mgl))
     rm(df)
 
-
     }
   }
 
@@ -79,19 +78,19 @@ le_lojas <- function(AMZ = 0,
       message("Criando imagens dos produtos...")
       source(glue::glue('{dir_funcoes_R}/imagem_produto.R'))
 
-      img_link <- dados_combinados |>
+      link_img <- dados_combinados |>
         dplyr::filter(duplicado == "Não" & link_img != "") |>
         dplyr::pull(link_img)
 
 
       pb <- progress::progress_bar$new(
         format = "  Processing [:bar] :percent in :elapsed | ETA: :eta",
-        total = length(img_link),
+        total = length(link_img),
         clear = FALSE,
         width = 60
       )
 
-      purrr::walk(img_link[1:10], purrr::possibly( ~ {
+      purrr::walk(link_img[1:10], purrr::possibly( ~ {
 
         pb$tick()
 
