@@ -106,7 +106,7 @@ le_lojas <- function(AMZ = 0,
           pb$tick()
 
           imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100)
-          i <- i + 1
+          i <<- i + 1
 
         }, NULL))
 

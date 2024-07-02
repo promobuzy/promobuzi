@@ -6,7 +6,8 @@ google_drive_upload <- function(diretorio = "imagens") {
       google_drive_delete_files()
 
     }
-  } else {
+  }
+
     path_completo <- paste0(getwd(), "/", diretorio)
 
     arquivos <- list.files(path_completo, full.names = T)
@@ -20,5 +21,4 @@ google_drive_upload <- function(diretorio = "imagens") {
         googledrive::drive_share(role = "reader", type = "anyone")
     })
 
-  }
 }
