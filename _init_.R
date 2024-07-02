@@ -10,7 +10,7 @@ lista_url <- openxlsx::read.xlsx(path,sheet = 1, colNames = F) |>
   dplyr::pull()
 
 # Usado para teste único
-lista_url <- c("https://www.magazinevoce.com.br/magazinepromobuzy/central-multimidia-evolve-multi-tela-7pol-com-espelhamento-ios-android-gp348/p/hffj4dfe8j/au/aucm/")
+lista_url <- c("https://amzn.to/3DRjWhT")
 
 
 ## Baixa Paginas da Web.
@@ -26,7 +26,20 @@ le_lojas (AMZ = 1,
           dir_output = "~/Projetos/promobuzi/Links_OUT",
           dir_logs  = '~/Projetos/promobuzi/logs_automacao')
 
-length(list.files(diretorio))
+
+# Autenticação Google Drive - Apenas 1 vez cada seção.
+autenticacao_google_drive()
+
+# Imagens foram criadas e auditadas? agora pode fazer upload para o Google Drive.
+# Imagens estão salvas em promobuzy/imagens
+google_drive_upload()
+
+# Agora vamos pegar o link direto das imagens e gravar no arquivo final dados.xlsx
+google_drive_direct_link()
+
+# Deletar arquivos do Google Drive
+google_drive_delete_files()
+
 
 
 

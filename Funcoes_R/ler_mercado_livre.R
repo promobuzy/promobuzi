@@ -168,10 +168,12 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       stringr::str_split(" ") |>
       purrr::map_chr(~ .x |> dplyr::first())
 
-    id_img <- link_img |>
-      urltools::path() |>
-      stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
-      stringr::str_remove( "\\.")
+    id_img <- titulo |>
+      stringr::str_remove_all("-") |>
+      stringr::str_squish() |>
+      stringr::str_replace_all("[^[:alnum:]-]", "-") |>
+      stringr::str_to_lower() |>
+      stringi::stri_trans_general("Latin-ASCII")
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
 

@@ -114,10 +114,12 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     link_img <- xml2::xml_find_first(x, "//div[@id='imgTagWrapperId']//img") |>
       xml2::xml_attr("data-old-hires")
 
-    id_img <- link_img |>
-      urltools::path() |>
-      stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
-      stringr::str_remove( "\\.")
+    id_img <- titulo |>
+      stringr::str_remove_all("-") |>
+      stringr::str_squish() |>
+      stringr::str_replace_all("[^[:alnum:]-]", "-") |>
+      stringr::str_to_lower() |>
+      stringi::stri_trans_general("Latin-ASCII")
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
 
