@@ -14,7 +14,12 @@ google_drive_auth <- function(diretorio="imagens"){
     dplyr::select(id, name) |>
     jsonlite::toJSON()
 
-  path <- file.path(paste0(getwd(),"/config/configuracoes_googledrive.json"))
+  diretorio <- paste0(getwd(),"/config")
+  if (!dir.exists(diretorio)) {
+    dir.create(diretorio)
+  }
+
+  path <- file.path(paste0(diretorio,"/config/configuracoes_googledrive.json"))
   write(info_diretorio, file = path)
 
 }

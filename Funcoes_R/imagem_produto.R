@@ -9,6 +9,10 @@ imagem_produto <- function(img_url,
                            kep.all = F,
                            diretorio=".") {
 
+  if (!dir.exists(diretorio)) {
+    dir.create(diretorio)
+  }
+
   if(kep.all == F){
 
     list.files(diretorio, full.names = T) |>

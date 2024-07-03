@@ -28,17 +28,24 @@ le_lojas (AMZ = 1,
 
 
 # Autenticação Google Drive - Apenas 1 vez cada seção.
-autenticacao_google_drive()
+source('~/Projetos/promobuzi/Funcoes_R/google_drive_auth.R')
+google_drive_auth()
 
 # Imagens foram criadas e auditadas? agora pode fazer upload para o Google Drive.
 # Imagens estão salvas em promobuzy/imagens
+source('~/Projetos/promobuzi/Funcoes_R/google_drive_upload.R')
 google_drive_upload()
 
 # Agora vamos pegar o link direto das imagens e gravar no arquivo final dados.xlsx
+source('~/Projetos/promobuzi/Funcoes_R/google_drive_direct_link.R')
 google_drive_direct_link()
 
 # Deletar arquivos do Google Drive
+source('~/Projetos/promobuzi/Funcoes_R/google_drive_delete_files.R')
 google_drive_delete_files()
+
+
+
 
 
 
