@@ -173,7 +173,8 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       stringi::stri_trans_general("Latin-ASCII") |>
       stringr::str_squish() |>
       stringr::str_replace_all("[^[:alnum:]-]", "-") |>
-      stringr::str_to_lower()
+      stringr::str_to_lower() |>
+      stringr::str_sub(1, 150)
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
 

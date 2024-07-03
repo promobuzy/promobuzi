@@ -5,7 +5,7 @@ imagem_produto <- function(img_url,
                            border = 5,
                            width = 852,
                            height = 850,
-                           format="webp",
+                           img_format="webp",
                            kep.all = F,
                            diretorio=".") {
 
@@ -23,9 +23,11 @@ imagem_produto <- function(img_url,
     image_name <- img_url |>
       urltools::path() |>
       stringr::str_extract("[^/]+(?=\\.[^/.]+$)") |>
-      stringr::str_remove( "\\.")
+      stringr::str_remove( "\\.") |>
+      stringr::str_sub(1, 150)
   } else {
-    image_name <- img_name
+    image_name <- img_name |>
+      stringr::str_sub(1, 150)
   }
 
   kern  <- matrix(c(
@@ -54,11 +56,10 @@ imagem_produto <- function(img_url,
   offset_y <- (height - image_height) / 2
 
   background <- magick::image_blank(width = width, height = height, color = "white")
-
   arquivo <- file.path(diretorio, paste0(image_name, ".", formato))
 
   magick::image_composite(background, img, offset = paste0("+", offset_x, "+", offset_y)) |>
-    magick::image_write(path = arquivo, format = format)
+    magick::image_write(path = arquivo, format = img_format ,quality = 100)
 
 }
 

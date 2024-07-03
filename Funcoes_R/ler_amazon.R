@@ -119,7 +119,8 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       stringi::stri_trans_general("Latin-ASCII") |>
       stringr::str_squish() |>
       stringr::str_replace_all("[^[:alnum:]-]", "-") |>
-      stringr::str_to_lower()
+      stringr::str_to_lower() |>
+      stringr::str_sub(1, 150)
 
 
     link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]

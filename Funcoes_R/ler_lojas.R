@@ -105,7 +105,7 @@ le_lojas <- function(AMZ = 0,
         list.files(diretorio, full.names = T) |>
           unlink()
 
-        purrr::walk2(dados$link_img,dados$id_img , purrr::possibly( ~ {
+        purrr::walk2(dados$link_img,dados$id_img, purrr::possibly( ~ {
 
           pb$tick()
 
