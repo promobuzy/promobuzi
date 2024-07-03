@@ -169,11 +169,11 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       purrr::map_chr(~ .x |> dplyr::first())
 
     id_img <- titulo |>
-      stringr::str_remove_all("-") |>
+      stringr::str_replace_all("[[:punct:]]|\\+", "") |>
+      stringi::stri_trans_general("Latin-ASCII") |>
       stringr::str_squish() |>
       stringr::str_replace_all("[^[:alnum:]-]", "-") |>
-      stringr::str_to_lower() |>
-      stringi::stri_trans_general("Latin-ASCII")
+      stringr::str_to_lower()
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
 

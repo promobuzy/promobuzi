@@ -101,11 +101,15 @@ le_lojas <- function(AMZ = 0,
         )
 
         i <- 1
+
+        list.files(diretorio, full.names = T) |>
+          unlink()
+
         purrr::walk2(dados$link_img,dados$id_img , purrr::possibly( ~ {
 
           pb$tick()
 
-          imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100)
+          imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100, kep.all = T)
           i <<- i + 1
 
         }, NULL))
