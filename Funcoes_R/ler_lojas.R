@@ -3,9 +3,10 @@ le_lojas <- function(AMZ = 0,
                      MGL = 0,
                      dir_funcoes_R = "~/Projetos/promobuzi/Funcoes_R",
                      dir_output = "~/Projetos/promobuzi/Links_OUT",
-                     dir_logs  = '~/Projetos/promobuzi/logs_automacao'){
+                     dir_logs  = "~/Projetos/promobuzi/logs_automacao"){
 
   arquivos <- list()
+
 
   salva_excel <- function(dados,nome_arquivo,diretorio="."){
 
@@ -105,11 +106,11 @@ le_lojas <- function(AMZ = 0,
         list.files(diretorio, full.names = T) |>
           unlink()
 
-        purrr::walk2(dados$link_img,dados$id_img, purrr::possibly( ~ {
+        purrr::walk2(dados$link_img, dados$id_img, purrr::possibly( ~ {
 
           pb$tick()
 
-          imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100, kep.all = T)
+          imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100, keep.all = T)
           i <<- i + 1
 
         }, NULL))
@@ -126,3 +127,4 @@ le_lojas <- function(AMZ = 0,
     }
   }
 }
+

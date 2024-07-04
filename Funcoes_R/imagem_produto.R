@@ -6,14 +6,14 @@ imagem_produto <- function(img_url,
                            width = 852,
                            height = 850,
                            img_format="webp",
-                           kep.all = F,
+                           keep.all = F,
                            diretorio=".") {
 
   if (!dir.exists(diretorio)) {
     dir.create(diretorio)
   }
 
-  if(kep.all == F){
+  if(keep.all == F){
 
     list.files(diretorio, full.names = T) |>
       unlink()
