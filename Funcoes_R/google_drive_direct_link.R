@@ -6,7 +6,7 @@ google_drive_direct_link <- function(){
   drive_imagens <- googledrive::drive_ls(googledrive::as_id(id_folder)) |>
     dplyr::select(name,id) |>
     dplyr::mutate(id_img = stringr::str_extract(name, "^[^.]+(?=\\.)"),
-                  direct_link = paste0("https://drive.google.com/uc?id=", id, "&export=view&file=", name)) |>
+                  direct_link = paste0("https://drive.google.com/uc?id=", id, "&export=download&file=", name)) |>
     dplyr::select(id_img,direct_link) |>
     dplyr::distinct(id_img, .keep_all = T)
 
