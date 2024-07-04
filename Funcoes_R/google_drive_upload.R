@@ -3,6 +3,7 @@ google_drive_upload <- function(diretorio = "imagens") {
   if (interactive()) {
     if (readline("Deseja deletar arquivos antigos? (s/n)") == "s") {
       message("Deletando arquivos antigos")
+      source('~/Projetos/promobuzi/Funcoes_R/google_drive_delete_files.R')
       google_drive_delete_files()
 
     }
