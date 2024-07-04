@@ -15,7 +15,6 @@ google_drive_upload <- function(diretorio = "imagens") {
     id_folder <- jsonlite::read_json("config/configuracoes_googledrive.json") |>
       purrr::pluck(1, "id")
 
-
     purrr::map(arquivos, ~ {
       googledrive::drive_upload(media = .x, path = googledrive::as_id(id_folder)) |>
         googledrive::drive_share(role = "reader", type = "anyone")

@@ -56,7 +56,7 @@ imagem_produto <- function(img_url,
   offset_y <- (height - image_height) / 2
 
   background <- magick::image_blank(width = width, height = height, color = "white")
-  arquivo <- file.path(diretorio, paste0(image_name, ".", formato))
+  arquivo <- file.path(diretorio, paste0(image_name, ".", img_format))
 
   magick::image_composite(background, img, offset = paste0("+", offset_x, "+", offset_y)) |>
     magick::image_write(path = arquivo, format = img_format ,quality = 100)
