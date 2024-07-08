@@ -101,7 +101,7 @@ le_lojas <- function(AMZ = 0,
           width = 60
         )
 
-        i <- 1
+        i <- 0
 
         list.files(diretorio, full.names = T) |>
           unlink()
@@ -120,6 +120,7 @@ le_lojas <- function(AMZ = 0,
           message("Não foi possível criar nenhuma imagem.")
         } else
 
+          i <- i-1
           message(glue::glue("💾 Foram criadas {i} de {qtt_imagens} imagens."))
 
       }
