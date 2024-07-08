@@ -28,7 +28,7 @@ le_lojas (AMZ = 1,
 
 
 
-
+#Upload das Imagens da pasta para o Wordpress e Geração de links
 source('~/Projetos/promobuzi/Funcoes_R/wp_direct_link.R')
 wp_direct_link()
 
