@@ -12,7 +12,14 @@ detalhes_pechinchou <- function(lista_url){
   )
 
 
-  purrr::map_dfr(lista_url, purrr::possibly(~{
+  requisicao_segura <- purrr::possibly(~{
+    httr2::request(.x) |>
+      httr2::req_headers(!!!h) |>
+      httr2::req_perform()
+  }, otherwise = NULL)
+
+
+  purrr::map_dfr(lista_url, ~{
 
     pb$tick()
 
@@ -37,14 +44,22 @@ detalhes_pechinchou <- function(lista_url){
       stringr::str_remove_all("R\\$") |>
       stringr::str_squish()
 
+
     link_afiliado <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
       xml2::xml_text() |>
       jsonlite::fromJSON() |>
-      purrr::pluck("props", "pageProps", "promo", "short_url") |>
-      httr2::request() |>
-      httr2::req_headers(!!!h) |>
-      httr2::req_perform()
+      purrr::pluck("props", "pageProps", "infos","products", "results","short_url")
+
+    if(is.null(link_afiliado)){
+
+      link_afiliado <- dados |>
+        xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
+        xml2::xml_text() |>
+        jsonlite::fromJSON() |>
+        purrr::pluck("props", "pageProps", "promo", "short_url")
+
+    }
 
     produto <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
@@ -65,9 +80,9 @@ detalhes_pechinchou <- function(lista_url){
       produto,
       preco_antigo,
       preco_novo,
-      link_afiliado = link_afiliado$url)
+      link_afiliado )
 
-  }, NULL))
+  })
 }
 
 

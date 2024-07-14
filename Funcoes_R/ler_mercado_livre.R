@@ -97,7 +97,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     regex_preco <- "\\bR\\$\\s*\\d{1,3}(?:\\.?\\d{3})*(?:,\\d{2})?\\b"
 
-    if(!stringr::str_detect(parcelamento,"R\\$")) {
+    if(!is.null(parcelamento) || !stringr::str_detect(parcelamento,"R\\$")) {
 
       preco_novo <- httr2::request(link) |>
         httr2::req_headers(`User-Agent` = "Mozilla/5.0") |>
@@ -178,8 +178,12 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     source("~/Projetos/promobuzi/Funcoes_R/modificador_url_concorrente.R")
 
-    if(stringr::str_detect(link,"pechinchou")) {
-      urls <- modificador_url_concorrente("mercadolivre",link)
+
+    if (stringr::str_detect(link, "pechinchou")) {
+      urls <- modificador_url_concorrente("mercadolivre", link)
+
+    } else if (stringr::str_detect(link, "promobuzy|qualificados|fc20240528150632")) {
+      urls <- list(link)
     } else {
       urls <- list(link)
     }
@@ -199,7 +203,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
       loja = "39827",
       link,
       link_promobuzy  = urls[[1]],
-      link_qualificados = NA,
+      link_qualificados = urls[[2]],
       link_img,
       id_img)
 

@@ -71,6 +71,7 @@ le_lojas <- function(AMZ = 0,
   caminho_combinado <- file.path(dir_output, "dados.xlsx")
   openxlsx::write.xlsx(dados_combinados, file = caminho_combinado, asTable = T)
 
+
   message(paste("💾 Base salva em ", caminho_combinado))
 
   # perguntar se poder fazer as imagens
@@ -101,7 +102,6 @@ le_lojas <- function(AMZ = 0,
           width = 60
         )
 
-        i <- 0
 
         list.files(diretorio, full.names = T) |>
           unlink()
@@ -111,16 +111,17 @@ le_lojas <- function(AMZ = 0,
           pb$tick()
 
           imagem_produto(img_url = .x, img_name = .y , diretorio = diretorio, border = 100, keep.all = T)
-          i <<- i + 1
 
         }, NULL))
 
 
+        i <- length(list.files(diretorio))
+
          if(i == 0){
+
           message("Não foi possível criar nenhuma imagem.")
         } else
 
-          i <- i-1
           message(glue::glue("💾 Foram criadas {i} de {qtt_imagens} imagens."))
 
       }

@@ -11,7 +11,7 @@ wp_direct_link <- function(img_format="webp", diretorio = "imagens") {
       openxlsx::write.xlsx(path_completo, asTable = T)
 
   }, error = function(e) {
-    message("Feche o arquivo Excel Dados 😵")
+    message(e$message)
   })
 }
 

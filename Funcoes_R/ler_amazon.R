@@ -63,9 +63,15 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
 
     texto_opcional <- xml2::xml_find_first(x, ".//span[@id='dealBadgeSupportingText'] | .//div[@id = 'zeitgeistBadge_feature_div']//i") |>
-      xml2::xml_text(trim = T) |>
-      (\ (txt) if(!is.na(depara[txt])) depara[txt] else txt )() |>
-      purrr::pluck(1)
+      xml2::xml_text(trim = TRUE) |>
+      (\(txt) {
+        if (!is.null(depara[[txt]])) {
+          depara[[txt]]
+        } else {
+          txt
+        }
+      })()
+
     if(is.null(texto_opcional)){ texto_opcional <- NA}
 
     regex_preco <- "R\\$\\s*\\d{1,3}(?:\\.?\\d{3})*(?:,\\d{2})?"
@@ -101,7 +107,9 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
 
     # Cupom
     cupom <- xml2::xml_find_first(x, "//label[contains(@id,'couponText')]") |>
-      xml2::xml_text(trim = T)
+      xml2::xml_text(trim = T) |>
+      stringr::str_extract("^.*?(?=\\.cx)") |>
+      stringr::str_squish()
 
     if(is.na(cupom)){
 

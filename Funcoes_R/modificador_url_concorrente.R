@@ -49,7 +49,8 @@ modificador_url_concorrente <- function(loja, url) {
 
     }  else if (stringr::str_detect(stringr::str_to_lower(loja), "mercadolivre")) {
 
-      lapply(c("promobuzy","qualificados"), function(tag) {
+      lapply(c("promobuzy","fc20240528150632"), function(tag) {
+
 
         if(tag =="promobuzy"){
           path <- "~/Projetos/promobuzi/cookies/ML_promobuzy_cookie.txt"
@@ -58,9 +59,9 @@ modificador_url_concorrente <- function(loja, url) {
           path <- "~/Projetos/promobuzi/cookies/ML_qualificados_fc20240528150632_cookie.txt"
           tag <- "promobuzy"
         }
-        source("~/Projetos/promobuzi/Funcoes_R/read_http_request.R")
 
-        link <- "https://www.mercadolivre.com.br/affiliate-program/api/affiliates/v1/createUrls"
+        source("~/Projetos/promobuzi/Funcoes_R/read_http_request.R")
+        api <- "https://www.mercadolivre.com.br/affiliate-program/api/affiliates/v1/createUrls"
 
         cookie <- parse_http_headers(path) |>
           dplyr::filter(key == "Cookie") |>
@@ -74,6 +75,14 @@ modificador_url_concorrente <- function(loja, url) {
           dplyr::filter(key == "User-Agent") |>
           dplyr::pull(value)
 
+        url <- httr2::request(url) |>
+          httr2::req_headers(`User-Agent` = User_Agent) |>
+          httr2::req_perform() |>
+          httr2::resp_body_html() |>
+          xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
+          xml2::xml_attr("href")
+
+
         body <- list(urls = list(url), tag  = tag)
 
         headers <- c(
@@ -83,15 +92,28 @@ modificador_url_concorrente <- function(loja, url) {
           Cookie = cookie
         )
 
-        dados <- link |>
-          httr2::request() |>
-          httr2::req_headers(!!!headers) |>
-          httr2::req_body_json(body) |>
-          httr2::req_perform() |>
-          httr2::resp_body_json()
+        if((!is.null(url) && !is.na(url))){
 
-        dados$urls[[1]]$short_url[1]
+          dados <- api |>
+            httr2::request() |>
+            httr2::req_headers(!!!headers) |>
+            httr2::req_body_json(body) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json()
+
+        } else {
+
+          dados <- list(urls = list(list(message = "URL inválida")))
+        }
+
+        if (!is.null(dados$urls[[1]]$short_url[1])){
+          dados$urls[[1]]$short_url[1]
+        } else {
+          dados$urls[[1]]$message
+        }
+
       })
+
     }
   }, error = function(e) {
     message("Erro: ", e)
@@ -101,8 +123,7 @@ modificador_url_concorrente <- function(loja, url) {
 
 
 
-#urls <- "https://www.mercadolivre.com.br/g-tech-gp400-branco-medidor-de-presso-arterial-digital/p/MLB19380860#polycard_client=storefronts&wid=MLB3345740523&sid=storefronts&type=product&tracking_id=ebff8bf1-859e-496c-b707-ed2455715859&source=eshops"
-
+#urls <- "https://www.mercadolivre.com.br/social/pechinchou?matt_tool=89815958&forceInApp=true&ref=BGMP2BgK9U85mlmCJgTJh6MSs7HVibFQfNigkIqRvz8jkmKA8d8eZl0UDNZMJ7dLlr%2F7mqF3vYjXUEr8gAKkuHvvt5toDjeFms74vWyDPm4wSmBI25Lwh7eBi5GbUdOtw4gFhO%2BmBEFItv6EGvynSYdUvaTo%2BgJ%2BoUk1E3pyRkp2J2AUtf9AB%2FBIubLn%2FxL%2BjwRQA04%3D"
 #modificador_url_concorrente("mercadolivre", urls)
 
 
