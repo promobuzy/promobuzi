@@ -7,6 +7,7 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
   }
 
+
   converte_numero <- function(numero){
     numero <- stringr::str_replace_all(numero, stringr::fixed("."), "")
     numero <- stringr::str_replace_all(numero, stringr::fixed(","), ".")

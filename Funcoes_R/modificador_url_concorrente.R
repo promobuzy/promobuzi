@@ -57,7 +57,7 @@ modificador_url_concorrente <- function(loja, url) {
         }
         else {
           path <- "~/Projetos/promobuzi/cookies/ML_qualificados_fc20240528150632_cookie.txt"
-          tag <- "promobuzy"
+
         }
 
         source("~/Projetos/promobuzi/Funcoes_R/read_http_request.R")

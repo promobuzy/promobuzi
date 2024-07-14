@@ -71,7 +71,6 @@ le_lojas <- function(AMZ = 0,
   caminho_combinado <- file.path(dir_output, "dados.xlsx")
   openxlsx::write.xlsx(dados_combinados, file = caminho_combinado, asTable = T)
 
-
   message(paste("💾 Base salva em ", caminho_combinado))
 
   # perguntar se poder fazer as imagens
