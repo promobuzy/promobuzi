@@ -61,6 +61,20 @@ detalhes_pechinchou <- function(lista_url){
 
     }
 
+    tryCatch({
+
+      link_afiliado <- link_afiliado
+      httr2::request() |>
+        httr2::req_headers(!!!h) |>
+        httr2::req_perform()
+
+
+    }, error = function(e) {
+      link_afiliado <- list(url = link_afiliado)
+    })
+
+
+
     produto <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
       xml2::xml_text() |>
@@ -80,7 +94,7 @@ detalhes_pechinchou <- function(lista_url){
       produto,
       preco_antigo,
       preco_novo,
-      link_afiliado )
+      link_afiliado$url )
 
   })
 }
