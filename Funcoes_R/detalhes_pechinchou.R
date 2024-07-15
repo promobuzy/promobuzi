@@ -67,6 +67,9 @@ detalhes_pechinchou <- function(lista_url){
       link_afiliado <- list(url = link_afiliado)
     })
 
+    if(!is.list(link_afiliado)){
+      link_afiliado <- list(url = link_afiliado)
+    }
 
     produto <- dados |>
       xml2::xml_find_first(".//script[@id='__NEXT_DATA__']") |>
