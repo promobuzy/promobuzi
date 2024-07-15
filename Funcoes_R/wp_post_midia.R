@@ -28,6 +28,7 @@ wp_post_midia <- function(nome_arquivo, diretorio = "imagens") {
 
   link_img <- req$media_details$sizes$full$source_url |> as.character()
 
-  return(url)
+  return(link_img)
+
 
 }

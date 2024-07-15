@@ -62,9 +62,13 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/b225b3ba-c1fd-11ee-97a5-02566cc712d2.png") ~ "⚡ Oferta Relâmpago",
 
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/a8e6e066-21d0-11ef-b5a7-02d117240621.png") ~ "⚡ Oferta Relâmpago",
+
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/a7253b7c-dd71-11ee-97a5-02566cc712d2.png") ~ "📺 Viu essa oferta na TV?",
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/dde4c710-34b3-11ef-8978-b6ad66f509eb.png") ~ "💸 Liquida de Milhões",
 
         stringr::str_detect(texto,"https://mvc.mlcdn.com.br/magazinevoce/img/common/black-app-parceiro.png") ~ "🔥 Preço Exclusivo",
 
@@ -95,9 +99,9 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
       {\(dados)dplyr::case_when(
         !is.null(dados$customer_cost) && stringr::str_detect(dados$customer_cost, "^0") ~ "Frete Grátis, aproveite!",
 
-        !is.null(dados$politica1) && stringr::str_detect(dados$politica1 , "Retire na") ~ "Retire na loja e não pague frete",
+        !is.null(dados$politica1) && stringr::str_detect(dados$politica1 , "Retire na") ~ "Frete Grátis, retire na loja!",
 
-        !is.null(dados$politica2) && stringr::str_detect(dados$politica2 , "Retire na") ~ "Retire na loja e não pague frete",
+        !is.null(dados$politica2) && stringr::str_detect(dados$politica2 , "Retire na") ~ "Frete Grátis, retire na loja!",
 
         TRUE ~  "Frete: Consultar Região"
       )}()
