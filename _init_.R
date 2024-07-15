@@ -32,8 +32,7 @@ le_lojas (AMZ = 1,
 source('~/Projetos/promobuzi/Funcoes_R/wp_direct_link.R')
 wp_direct_link()
 
+
 #Prepara os dados para serem enviados para o Worldpress
 source('~/Projetos/promobuzi/Funcoes_R/preparar_para_worldpress.R')
 preparar_para_worldpress()
-
-
