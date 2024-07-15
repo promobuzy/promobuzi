@@ -1,7 +1,8 @@
 detalhes_pechinchou <- function(lista_url){
 
   h <-  c(
-    `User-Agent` = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0")
+    `User-Agent` = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0"
+  )
 
 
   pb <- progress::progress_bar$new(
@@ -10,13 +11,6 @@ detalhes_pechinchou <- function(lista_url){
     clear = FALSE,
     width = 60
   )
-
-
-  requisicao_segura <- purrr::possibly(~{
-    httr2::request(.x) |>
-      httr2::req_headers(!!!h) |>
-      httr2::req_perform()
-  }, otherwise = NULL)
 
 
   purrr::map_dfr(lista_url, ~{
@@ -63,7 +57,7 @@ detalhes_pechinchou <- function(lista_url){
 
     tryCatch({
 
-      link_afiliado <- link_afiliado
+      link_afiliado <- link_afiliado |>
       httr2::request() |>
         httr2::req_headers(!!!h) |>
         httr2::req_perform()
@@ -72,7 +66,6 @@ detalhes_pechinchou <- function(lista_url){
     }, error = function(e) {
       link_afiliado <- list(url = link_afiliado)
     })
-
 
 
     produto <- dados |>
