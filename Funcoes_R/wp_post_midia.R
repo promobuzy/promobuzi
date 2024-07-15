@@ -4,7 +4,7 @@ wp_post_midia <- function(nome_arquivo, diretorio = "imagens") {
   arquivo <- file.path(diretorio, nome_arquivo)
 
   if (!file.exists(arquivo)) {
-    return(NULL)
+    return(NA_character_)
   }
 
   imagem_bin <- readr::read_file_raw(arquivo)
@@ -28,6 +28,6 @@ wp_post_midia <- function(nome_arquivo, diretorio = "imagens") {
 
   link_img <- req$media_details$sizes$full$source_url |> as.character()
 
-  return(link_img)
+  return(url)
 
 }
