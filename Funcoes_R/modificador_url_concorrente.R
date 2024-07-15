@@ -75,12 +75,16 @@ modificador_url_concorrente <- function(loja, url) {
           dplyr::filter(key == "User-Agent") |>
           dplyr::pull(value)
 
+
+        if (stringr::str_detect(url, "pechinchou")) {
+
         url <- httr2::request(url) |>
           httr2::req_headers(`User-Agent` = User_Agent) |>
           httr2::req_perform() |>
           httr2::resp_body_html() |>
           xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
           xml2::xml_attr("href")
+        }
 
 
         body <- list(urls = list(url), tag  = tag)
@@ -94,12 +98,17 @@ modificador_url_concorrente <- function(loja, url) {
 
         if((!is.null(url) && !is.na(url))){
 
-          dados <- api |>
-            httr2::request() |>
-            httr2::req_headers(!!!headers) |>
-            httr2::req_body_json(body) |>
-            httr2::req_perform() |>
-            httr2::resp_body_json()
+          tryCatch({
+            dados <- api |>
+              httr2::request() |>
+              httr2::req_headers(!!!headers) |>
+              httr2::req_body_json(body) |>
+              httr2::req_perform() |>
+              httr2::resp_body_json()
+          }, error = function(e) {
+            message("Erro: ", e)
+          })
+
 
         } else {
 
