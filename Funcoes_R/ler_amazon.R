@@ -57,7 +57,8 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
       xml2::xml_text(trim = T)
 
     depara <- '{
-      "Oferta" : "💰 OFERTA"
+      "Oferta" : "💰 OFERTA",
+      "Oferta Prime Day":"⭐ Oferta Prime Day"
     }' |>
       jsonlite::fromJSON()
 
