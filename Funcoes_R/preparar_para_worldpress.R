@@ -131,7 +131,7 @@ preparar_para_worldpress <- function() {
   	,pdr.`Metadado: cupom-1-descricao`
   	,COALESCE (pdr.`Metadado: cupom-1-codigo`, con.cupom) as `Metadado: cupom-1-codigo`
   	,pdr.`Metadado: frete`
-  	,COALESCE (pdr.`URL externa`, pdr.LINK_REFERENCIA) as `URL externa`
+  	,COALESCE (pdr.LINK_REFERENCIA, pdr.`URL externa`) as `URL externa`
   	,pdr.`Metadado: logotipo`
   	,pdr.`Categorias`
   	,pdr.`Texto do botão`
