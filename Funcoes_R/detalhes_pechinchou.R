@@ -90,7 +90,7 @@ detalhes_pechinchou <- function(lista_url){
       produto,
       preco_antigo,
       preco_novo,
-      link_afiliado$url )
+      link_afiliado = link_afiliado$url )
 
   })
 }

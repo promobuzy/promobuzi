@@ -107,7 +107,7 @@ preparar_para_worldpress <- function() {
       ,aut.link_promobuzy
       ,aut.link_qualificados
       FROM dados_automacao aut
-      LEFT JOIN banco_total tot on aut.titulo = tot.Nome
+      LEFT JOIN banco_total tot on lower(trim(aut.titulo)) = lower(trim(tot.Nome))
     "
     )
 
@@ -123,15 +123,15 @@ preparar_para_worldpress <- function() {
   	,REPLACE(pdr.`ID`,'.0','') AS `ID`
   	,pdr.`Nome`
   	,pdr.`Metadado: texto-opcional`
-  	,COALESCE (pdr.`Preço`, con.preco_antigo) AS `Preço`
-  	,COALESCE (pdr.`Preço promocional`, con.preco_novo) as `Preço promocional`
+  	,COALESCE (con.preco_antigo, pdr.`Preço`) AS `Preço`
+  	,COALESCE (con.preco_novo, pdr.`Preço promocional`) as `Preço promocional`
   	,pdr.`Metadado: parcelamento-descricao`
   	,pdr.`Metadado: parcelamento`
-  	,pdr.`Metadado: cupom-1` as `Metadado: cupom-1`
-  	,pdr.`Metadado: cupom-1-descricao`
-  	,COALESCE (pdr.`Metadado: cupom-1-codigo`, con.cupom) as `Metadado: cupom-1-codigo`
+  	,case when con.cupom is not null then null else pdr.`Metadado: cupom-1` end as `Metadado: cupom-1`
+  	,case when con.cupom is not null then null else pdr.`Metadado: cupom-1-descricao` end as `Metadado: cupom-1-descricao`
+  	,case when con.cupom is not null then con.cupom else pdr.`Metadado: cupom-1-codigo` end as `Metadado: cupom-1-codigo`
   	,pdr.`Metadado: frete`
-  	,COALESCE (pdr.LINK_REFERENCIA, pdr.`URL externa`) as `URL externa`
+  	,COALESCE ('pdr.LINK_REFERENCIA', pdr.`URL externa`) as `URL externa`
   	,pdr.`Metadado: logotipo`
   	,pdr.`Categorias`
   	,pdr.`Texto do botão`
@@ -146,8 +146,9 @@ preparar_para_worldpress <- function() {
   						 ,loja as loja
   						 ,link_afiliado as link_afiliado
   						from dados_concorrentes
-  						where cupom is not null) con on con.produto = pdr.Nome
+  						where cupom is not null) con on lower(trim(con.produto)) = lower(trim(pdr.Nome))
     "
+data <- Sys.Date()
 
   purrr::walk(links, ~{
 
@@ -158,7 +159,7 @@ preparar_para_worldpress <- function() {
     nome <- .x |>
       stringr::str_extract("[^_]+$")
 
-    arquivo <- glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}.xlsx")
+    arquivo <- glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}_{data}.xlsx")
 
     openxlsx::write.xlsx(file = arquivo, dados, asTable = T)
 
