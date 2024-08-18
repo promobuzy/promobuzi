@@ -163,7 +163,7 @@ data <- Sys.Date()
 
     openxlsx::write.xlsx(file = arquivo, dados, asTable = T)
 
-    write.csv(dados, glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}_{data}.csv")
+    write.csv(dados, glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}_{data}.csv"))
 
 
   })
