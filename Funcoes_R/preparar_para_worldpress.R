@@ -84,30 +84,30 @@ preparar_para_worldpress <- function() {
       "
       INSERT INTO produtos
       SELECT
-       CASE WHEN aut.duplicado = 'Não' THEN -1 ELSE 1 END AS `Publicado`
-      ,'external' AS `Tipo`
-      ,tot.`ID`
-      ,COALESCE (tot.`Nome`,aut.titulo) AS `Nome`
-      ,COALESCE (aut.texto_opcional, tot.`Metadado:.texto-opcional`) AS `Metadado: texto-opcional`
-      ,COALESCE (aut.preco_antigo, tot.`Preço`) AS `Preço`
-      ,COALESCE (aut.preco_novo, tot.`Preço.promocional`) AS `Preço promocional`
-      ,COALESCE (aut.pagamento, tot.`Metadado:.parcelamento-descricao`) AS `Metadado: parcelamento-descricao`
-      ,COALESCE (aut.parcelamento, tot.`Metadado:.parcelamento`) AS `Metadado: parcelamento`
-      ,tot.`Metadado:.cupom-1` AS `Metadado: cupom-1`
-      ,tot.`Metadado:.cupom-1-descricao` AS `Metadado: cupom-1-descricao`
-      ,COALESCE (aut.cupom, tot.`Metadado:.cupom-1-codigo`) AS `Metadado: cupom-1-codigo`
-      ,COALESCE (aut.entrega, tot.`Metadado:.frete`) AS `Metadado: frete`
-      ,tot.`URL.externa` AS `URL externa`
-      ,COALESCE (aut.loja, tot.`Metadado:.logotipo`) AS `Metadado: logotipo`
-      ,'{dia_semana}' AS `Categorias`
-      ,COALESCE (tot.`Texto.do.botão`,'APROVEITE A OFERTA') AS `Texto do botão`
-      ,COALESCE (aut.direct_link, tot.`Imagens`) AS `Imagens`
-      ,tot.`Descrição.curta` as `Descrição curta`
-      ,aut.link
-      ,aut.link_promobuzy
-      ,aut.link_qualificados
-      FROM dados_automacao aut
-      LEFT JOIN banco_total tot on lower(trim(aut.titulo)) = lower(trim(tot.Nome))
+      CASE WHEN aut.duplicado = 'Não' THEN -1 ELSE 1 END AS `Publicado`
+     ,'external' AS `Tipo`
+     ,tot.`ID`
+     ,COALESCE (tot.`Nome`,aut.titulo) AS `Nome`
+     ,COALESCE (aut.texto_opcional, tot.`Metadado:.texto-opcional`) AS `Metadado: texto-opcional`
+     ,COALESCE (aut.preco_antigo, tot.`Preço`) AS `Preço`
+     ,COALESCE (aut.preco_novo, tot.`Preço.promocional`) AS `Preço promocional`
+     ,COALESCE (aut.pagamento, tot.`Metadado:.parcelamento-descricao`) AS `Metadado: parcelamento-descricao`
+     ,COALESCE (aut.parcelamento, tot.`Metadado:.parcelamento`) AS `Metadado: parcelamento`
+     ,null AS `Metadado: cupom-1`
+     ,null AS `Metadado: cupom-1-descricao`
+     ,aut.cupom AS `Metadado: cupom-1-codigo`
+     ,COALESCE (aut.entrega, tot.`Metadado:.frete`) AS `Metadado: frete`
+     ,tot.`URL.externa` AS `URL externa`
+     ,COALESCE (aut.loja, tot.`Metadado:.logotipo`) AS `Metadado: logotipo`
+     ,'{dia_semana}' AS `Categorias`
+     ,COALESCE (tot.`Texto.do.botão`,'APROVEITE A OFERTA') AS `Texto do botão`
+     ,COALESCE (aut.direct_link, tot.`Imagens`) AS `Imagens`
+     ,tot.`Descrição.curta` as `Descrição curta`
+     ,aut.link
+     ,aut.link_promobuzy
+     ,aut.link_qualificados
+     FROM dados_automacao aut
+     LEFT JOIN banco_total tot on lower(trim(aut.titulo)) = lower(trim(tot.Nome))
     "
     )
 
@@ -127,11 +127,11 @@ preparar_para_worldpress <- function() {
   	,COALESCE (con.preco_novo, pdr.`Preço promocional`) as `Preço promocional`
   	,pdr.`Metadado: parcelamento-descricao`
   	,pdr.`Metadado: parcelamento`
-  	,case when con.cupom is not null then null else pdr.`Metadado: cupom-1` end as `Metadado: cupom-1`
-  	,case when con.cupom is not null then null else pdr.`Metadado: cupom-1-descricao` end as `Metadado: cupom-1-descricao`
-  	,case when con.cupom is not null then con.cupom else pdr.`Metadado: cupom-1-codigo` end as `Metadado: cupom-1-codigo`
+  	,pdr.`Metadado: cupom-1` as `Metadado: cupom-1`
+  	,pdr.`Metadado: cupom-1-descricao` as `Metadado: cupom-1-descricao`
+  	,con.cupom as `Metadado: cupom-1-codigo`
   	,pdr.`Metadado: frete`
-  	,COALESCE ('pdr.LINK_REFERENCIA', pdr.`URL externa`) as `URL externa`
+  	,COALESCE (pdr.LINK_REFERENCIA, pdr.`URL externa`) as `URL externa`
   	,pdr.`Metadado: logotipo`
   	,pdr.`Categorias`
   	,pdr.`Texto do botão`
@@ -162,6 +162,9 @@ data <- Sys.Date()
     arquivo <- glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}_{data}.xlsx")
 
     openxlsx::write.xlsx(file = arquivo, dados, asTable = T)
+
+    write.csv(dados, glue::glue("~/Projetos/promobuzi/Links_OUT/wp_dados_{nome}_{data}.csv")
+
 
   })
 
