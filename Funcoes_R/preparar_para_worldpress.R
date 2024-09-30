@@ -83,7 +83,7 @@ preparar_para_worldpress <- function() {
     glue::glue(
       "
       INSERT INTO produtos
-      SELECT
+   SELECT
       CASE WHEN aut.duplicado = 'Não' THEN -1 ELSE 1 END AS `Publicado`
      ,'external' AS `Tipo`
      ,tot.`ID`
@@ -102,7 +102,7 @@ preparar_para_worldpress <- function() {
      ,'{dia_semana}' AS `Categorias`
      ,COALESCE (tot.`Texto.do.botão`,'APROVEITE A OFERTA') AS `Texto do botão`
      ,COALESCE (aut.direct_link, tot.`Imagens`) AS `Imagens`
-     ,tot.`Descrição.curta` as `Descrição curta`
+     ,aut.link as `Descrição curta`
      ,aut.link
      ,aut.link_promobuzy
      ,aut.link_qualificados

@@ -70,6 +70,8 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
 
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/9a91b0e6-7a99-11ef-983d-1a6882f79d62.png") ~ "🔥 Até 21x no Cartão!",
+
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/dde4c710-34b3-11ef-8978-b6ad66f509eb.png") ~ "💸 Liquida de Milhões",
 
         stringr::str_detect(texto,"https://mvc.mlcdn.com.br/magazinevoce/img/common/black-app-parceiro.png") ~ "🔥 Preço Exclusivo",

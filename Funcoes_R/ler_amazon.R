@@ -59,7 +59,7 @@ ler_amazon <- function(arquivos = NULL, diretorio = ".") {
     depara <- '{
       "Oferta" : "💰 OFERTA",
       "1º mais vendido" : "🥇 1º mais vendido",
-      "Com Prime" : "⭐ Exclusiva Amazon Prime,
+      "Com Prime" : "⭐ Exclusiva Amazon Prime",
       "Oferta Prime Day":"⭐ Oferta Prime Day"
     }' |>
       jsonlite::fromJSON()
