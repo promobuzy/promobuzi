@@ -46,6 +46,8 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
     width = 60
   )
 
+
+
   message("Etapa 2/2 - Extraíndo Conteúdo")
 
   purrr::map_dfr(seq_along(conteudo), purrr::possibly(~{
@@ -53,18 +55,23 @@ ler_mercado_livre <- function(arquivos = NULL, diretorio = ".") {
 
     x <- conteudo[[.x]]
 
-    link <- links$link[links$path == arquivos[[.x]] |> stringr::str_extract("[^/]+$")]
+    # Extração do link correspondente
+    link_path <- arquivos[[.x]] |> stringr::str_extract("[^/]+$")
+    link <- links$link[links$path == link_path]
 
+    # Extração do título
     titulo <- xml2::xml_find_first(x, ".//h1") |>
       xml2::xml_text()
 
-    depara = '{
-        "MAIS VENDIDO":"♨️ Mais Vendido!",
-        "Oferta do Dia":"👀 OFERTA DO DIA",
-        "RECOMENDADO":"🤝 Recomendado",
-        "OFERTA RELÁMPAGO": "⚡ Oferta Relâmpago"
-    }' |>
-      jsonlite::fromJSON()
+    # Conversão JSON para de-para
+    depara <- '{
+      "MAIS VENDIDO":"♨️ Mais Vendido!",
+      "Oferta do Dia":"👀 OFERTA DO DIA",
+      "RECOMENDADO":"🤝 Recomendado",
+      "OFERTA RELÁMPAGO": "⚡ Oferta Relâmpago"
+  }' |> jsonlite::fromJSON()
+
+
 
     texto_opcional <- xml2::xml_find_first(x, ".//a[@class= 'ui-pdp-promotions-pill-label__target']") |>
       xml2::xml_text() |>
