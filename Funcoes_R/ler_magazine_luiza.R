@@ -78,6 +78,12 @@ ler_magazine_luiza <- function(arquivos = NULL, diretorio = ".") {
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/84b63304-9890-11ef-8be7-4e5cb18aaef8.png") ~ "🔝TOP Ofertas",
 
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/cc6370c2-97be-11ef-b7ce-d6f12fabbf13.png") ~ "🔜 Ofertas Antecipadas",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/8922e9d2-9895-11ef-8be7-4e5cb18aaef8.png") ~ "👀 IMPERDÍVEL",
+
+        stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/c395aba0-9d4e-11ef-8e82-56570942fd4b.png") ~ "📱🩵 SmartPhoniza",
+
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/e412ff6a-2688-11ee-94bb-de108f8f523f.png") ~ "♨️ Mais Vendido!",
 
         stringr::str_detect(texto,"https://i.mlcdn.com.br/selo-ml/65x50/9a91b0e6-7a99-11ef-983d-1a6882f79d62.png") ~ "🔥 Até 21x no Cartão!",
