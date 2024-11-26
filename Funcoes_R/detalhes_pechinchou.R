@@ -13,7 +13,7 @@ detalhes_pechinchou <- function(lista_url){
   )
 
 
-  purrr::map_dfr(lista_url, ~{
+  purrr::map_dfr(lista_url, purrr::possibly(~{
 
     pb$tick()
 
@@ -92,7 +92,7 @@ detalhes_pechinchou <- function(lista_url){
       preco_novo,
       link_afiliado = link_afiliado$url )
 
-  })
+  }, NULL))
 }
 
 

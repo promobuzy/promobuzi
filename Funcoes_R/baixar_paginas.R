@@ -43,7 +43,7 @@ baixar_paginas <- function(lista_url = NULL,diretorio=".") {
         httr2::req_headers(!!!h) |>
         httr2::req_perform() |>
         httr2::resp_body_html() |>
-        xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
+        xml2::xml_find_first(".//a[@class = 'poly-component__title']") |>
         xml2::xml_attr("href")
 
       if (is.na(.x)) {
