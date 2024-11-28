@@ -39,9 +39,9 @@ preparar_para_worldpress <- function() {
 
   dados_concorrentes <- "~/Projetos/promobuzi/Links_OUT/links_pechinchou.xlsx" |>
     purrr::map_dfr(purrr::possibly( ~ {
-      openxlsx::read.xlsx(.x, sheet = 1)
+      readxl::read_excel(.x, sheet = 1)
     }, NULL)) |>
-    dplyr::distinct(produto, .keep_all = T)
+    dplyr::distinct(produto, .keep_all = TRUE)
 
   RSQLite::dbWriteTable(conn, "dados_concorrentes", dados_concorrentes, overwrite = T)
 
