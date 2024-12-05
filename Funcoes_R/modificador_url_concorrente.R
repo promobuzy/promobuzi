@@ -82,7 +82,7 @@ modificador_url_concorrente <- function(loja, url) {
           httr2::req_headers(`User-Agent` = User_Agent) |>
           httr2::req_perform() |>
           httr2::resp_body_html() |>
-          xml2::xml_find_first(".//a[@class = 'poly-component__link poly-component__link--action-link']") |>
+          xml2::xml_find_first(".//a[@class = 'poly-component__title']") |>
           xml2::xml_attr("href")
         }
 
